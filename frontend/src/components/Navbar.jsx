@@ -1,89 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleMenu = () => {};
   return (
     <>
-      <nav className="navbar navbar-expand-lg mt-2 mb-2">
-        <div className="container mx-auto">
-          <a className="navbar-brand" href="/">
-            <i className="ri-search-eye-fill text-purple-700"></i>
-            &nbsp;
-            <span className="text-purple-700 font-semibold text-lg">
+      <div className="container flex justify-between items-center w-full fixed top-0 left-0 right-0 md:w-auto">
+        <nav className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
+          <div className="flex justify-between items-center gap-32">
+            <div className="font-bold text-[#6300b3] text-2xl gap-1">
+              <i className="ri-search-eye-fill "></i>
               AlwaysApply
-            </span>
-          </a>
-          <button
-            className="navbar-toggler text-black-500"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a
-                  className="nav-link active text-purple-700 font-semibold"
-                  aria-current="page"
-                  href="/"
-                >
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link text-gray-600 hover:text-purple-700"
-                  href="/findJobs"
-                >
-                  Find Jobs
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link text-gray-600 hover:text-purple-700"
-                  href="/employers"
-                >
-                  Employers
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link text-gray-600 hover:text-purple-700"
-                  href="/admin"
-                >
-                  Admin
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link text-gray-600 hover:text-purple-700"
-                  href="/aboutUs"
-                >
-                  About Us
-                </a>
-              </li>
-            </ul>
-            <form className="flex gap-3">
-              <button
-                className="bg-transparent border-2 border-purple-700 text-purple-700 hover:bg-purple-700 hover:text-white px-4 py-2 rounded"
-                type="submit"
+            </div>
+            <div
+              onClick="handleMenu()"
+              className="text-3xl absolute right-8 top-6 cursor-pointer md:hidden"
+            >
+              <i class="fa-solid fa-bars" name={open ? 'close' : 'bar'}></i>
+            </div>
+            <div className="hidden md:flex md:justify-between md:items-center transition-all duration-500 ease-in gap-5 font-semibold">
+              <a href="/" className="text-[#6300b3] hover:text-[#6300b3]">
+                Home
+              </a>
+              <a
+                href="/findJobs"
+                className="text-gray-700 hover:text-[#6300b3]"
+              >
+                Find Jobs
+              </a>
+              <a
+                href="/employers"
+                className="text-gray-700 hover:text-[#6300b3]"
+              >
+                Employers
+              </a>
+              <a href="/admin" className="text-gray-700 hover:text-[#6300b3]">
+                Admin
+              </a>
+              <a href="/aboutUs" className="text-gray-700 hover:text-[#6300b3]">
+                About Us
+              </a>
+            </div>
+            <div className="hidden md:flex md:items-center md:justify-between gap-3">
+              <a
+                href="/contact"
+                className="px-4 py-2 border border-[#6300b3] text-purple-700 hover:bg-[#6300b3] hover:text-white transition-colors"
               >
                 Contact Us
-              </button>
-              <button
-                className="bg-purple-700 text-white hover:bg-transparent hover:text-purple-700 hover:border-2 hover:border-purple-700 px-4 py-2 rounded"
-                type="submit"
+              </a>
+              <a
+                href="/login"
+                className="px-4 py-2 bg-purple-700 text-white hover:border-[#6300b3] "
               >
                 Login
-              </button>
-            </form>
+              </a>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </>
   );
 };
