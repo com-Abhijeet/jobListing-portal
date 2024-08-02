@@ -19,8 +19,8 @@ const Footer = () => {
               Delhi 110006, India
             </p>
           </div>
-          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4 ms-10">
-            <h2 className="font-bold text-[#6300b3] text-xl">Quick Links</h2>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4 ms-10 text-sm">
+            <h2 className="font-bold text-[#6300b3] text-lg">Quick Links</h2>
             <a href="/about" className="hover:text-[#6300b3]">
               About
             </a>
@@ -31,8 +31,8 @@ const Footer = () => {
               Admin
             </a>
           </div>
-          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4">
-            <h2 className="font-bold text-[#6300b3] text-xl">Candidates</h2>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4 text-sm">
+            <h2 className="font-bold text-[#6300b3] text-lg">Candidates</h2>
             <a href="/jobs" className="hover:text-[#6300b3]">
               Browse Jobs
             </a>
@@ -46,8 +46,8 @@ const Footer = () => {
               Saved Jobs
             </a>
           </div>
-          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4">
-            <h2 className="font-bold text-[#6300b3] text-xl">Employers</h2>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4 text-sm">
+            <h2 className="font-bold text-[#6300b3] text-lg">Employers</h2>
             <a href="/post-job" className="hover:text-[#6300b3]">
               Post a Job
             </a>
