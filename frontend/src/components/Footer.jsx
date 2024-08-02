@@ -3,50 +3,63 @@ import React from 'react';
 const Footer = () => {
   return (
     <>
-      <div className="container bg-[#f9f4fc] mx-auto px-4 w-full left-0 right-0 p-14 ps-16 pl-16">
-        <div className="grid grid-rows-1 grid-flow-col gap-4">
-          <div className="grid grid-cols-4 gap-2 ms-20">
-            <div>
-              <h2 className="font-bold text-[#6300b3] text-1xl gap-1 mb-2">
-                <i className="ri-search-eye-fill "></i>
-                AlwaysApply
-              </h2>
-              <p className="text-gray-700">
-                Call now: <span className="text-[#6300b3]">+91 9591776078</span>
-              </p>
-              <p className="text-gray-700 text-sm mt-2">
-                456, Chandani Chowk Street, Near
-                <br />
-                Red Fort, Old Delhi, New Delhi,
-                <br /> Delhi 110006, India
-              </p>
-            </div>
-            <div className="flex flex-col justify-center align-center">
-              <h2 className="font-bold text-[#6300b3] text-1xl gap-2 mb-2">
-                <a>Quick Link</a>
-              </h2>
-              <a>About</a>
-              <a className="text-[#6300b3]">Contact</a>
-              <a>Admin</a>
-            </div>
-            <div className="flex flex-col justify-center align-center">
-              <h2 className="font-bold text-[#6300b3] text-1xl gap-2 mb-2">
-                <a>Candidate</a>
-              </h2>
-              <a>Browse Jobs</a>
-              <a>Browse Employers</a>
-              <a>Candidate Dashboard</a>
-              <a>Saved Jobs</a>
-            </div>
-            <div className="flex flex-col justify-center align-center">
-              <h2 className="font-bold text-[#6300b3] text-1xl gap-2 mb-2">
-                <a>Employers</a>
-              </h2>
-              <a>Post a Job</a>
-              <a>Browse Candidates</a>
-              <a>Employers Dashboard</a>
-              <a>Applications</a>
-            </div>
+      <div className="bg-[#f9f4fc] mx-auto px-4 py-14">
+        <div className="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="flex flex-col items-center md:items-start md:text-left space-y-4 ms-20">
+            <h2 className="font-bold text-[#6300b3] text-xl">
+              <i className="ri-search-eye-fill"></i> AlwaysApply
+            </h2>
+            <p className="text-gray-700">
+              Call now: <span className="text-[#6300b3]">+91 9591776078</span>
+            </p>
+            <p className="text-gray-700 text-sm">
+              456, Chandani Chowk Street, Near
+              <br /> Red Fort, Old Delhi, New Delhi,
+              <br />
+              Delhi 110006, India
+            </p>
+          </div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4 ms-10">
+            <h2 className="font-bold text-[#6300b3] text-xl">Quick Links</h2>
+            <a href="/about" className="hover:text-[#6300b3]">
+              About
+            </a>
+            <a href="/contact" className="hover:text-[#6300b3]">
+              Contact
+            </a>
+            <a href="/admin" className="hover:text-[#6300b3]">
+              Admin
+            </a>
+          </div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4">
+            <h2 className="font-bold text-[#6300b3] text-xl">Candidates</h2>
+            <a href="/jobs" className="hover:text-[#6300b3]">
+              Browse Jobs
+            </a>
+            <a href="/employers" className="hover:text-[#6300b3]">
+              Browse Employers
+            </a>
+            <a href="/dashboard" className="hover:text-[#6300b3]">
+              Candidate Dashboard
+            </a>
+            <a href="/saved-jobs" className="hover:text-[#6300b3]">
+              Saved Jobs
+            </a>
+          </div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left space-y-4">
+            <h2 className="font-bold text-[#6300b3] text-xl">Employers</h2>
+            <a href="/post-job" className="hover:text-[#6300b3]">
+              Post a Job
+            </a>
+            <a href="/candidates" className="hover:text-[#6300b3]">
+              Browse Candidates
+            </a>
+            <a href="/employer-dashboard" className="hover:text-[#6300b3]">
+              Employer Dashboard
+            </a>
+            <a href="/applications" className="hover:text-[#6300b3]">
+              Applications
+            </a>
           </div>
         </div>
       </div>
