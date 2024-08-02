@@ -47,7 +47,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="container bg-white flex justify-between items-center w-full fixed top-0 left-0 right-0 md:w-auto">
+      <div className="container bg-white flex justify-between items-center w-full top-0 left-0 right-0 md:w-auto">
         <nav className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
           <div className="flex justify-between items-center gap-32">
             <div className="font-bold text-[#6300b3] text-2xl gap-1">
@@ -98,10 +98,10 @@ const Navbar = () => {
               </a>
             </div>
           </div>
-          <div className="flex flex-row justify-between items-center md:hidden w-full">
-            <div className="flex-1">
+          <div className="flex justify-between items-center gap-10 md:hidden">
+            <div className="flex justify-end items-center w-1/2">
               <button
-                className="text-3xl p-4 flex justify-end"
+                className="flex-1 text-3xl p-4 flex justify-end"
                 onClick={handleClick}
               >
                 {click ? <FaTimes /> : <FaBars />}
