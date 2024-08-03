@@ -276,7 +276,7 @@ const Home = () => {
           </button>
           <hr className="-mt-5 z-0 text-gray-500" />
         </div>
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-10 mt-8">
+        <div className="flex flex-wrap justify-between items-center gap-4 md:gap-10 mt-8 me-20">
           <img
             src="./../../assets/google1.png"
             alt="Google"
@@ -290,17 +290,17 @@ const Home = () => {
           <img
             src="./../../assets/flipkart.png"
             alt="Flipkart"
-            className="w-16 h-auto mt-4 md:mt-10 md:w-28 lg:w-36"
+            className="w-16 h-auto mt-3 md:mt-10 md:w-28 lg:w-36"
           />
           <img
             src="./../../assets/youtube.png"
             alt="YouTube"
-            className="w-10 h-auto mt-8 md:mt-10 md:w-28 lg:w-32"
+            className="w-10 h-auto mt-4 md:mt-10 md:w-28 lg:w-32"
           />
           <img
             src="./../../assets/ibm.png"
             alt="IBM"
-            className="w-10 h-auto mt-8 md:mt-10 md:w-24 lg:w-24"
+            className="w-10 h-auto mt-4 md:mt-10 md:w-24 lg:w-24"
           />
         </div>
       </div>
