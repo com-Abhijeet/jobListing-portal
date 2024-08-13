@@ -10,11 +10,9 @@ import { setLoading } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 
-const Login = () => {
+const ForgotPassword = () => {
   const [input, setInput] = useState({
     email: '',
-    password: '',
-    role: '',
   });
 
   const { loading, user } = useSelector((store) => store.auth);
@@ -29,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+      const res = await axios.post(`${USER_API_END_POINT}/forgotpass`, input, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,7 +35,7 @@ const Login = () => {
       });
       // console.log(res.data.success);
       if (res.data.success) {
-        navigate('/');
+        navigate('/otpinput');
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -50,7 +48,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/otpinput');
     }
   }, []);
 
@@ -61,7 +59,7 @@ const Login = () => {
           onSubmit={submitHandler}
           className="w-1/2 border border-[#8d8296] shadow-2xl shadow-[#986dc0] rounded-md p-4 my-10"
         >
-          <h1 className="font-bold text-xl mb-5">Login</h1>
+          <h1 className="font-bold text-2xl mb-5">Forgot Password</h1>
           <div className="my-2">
             <Label>Email</Label>
             <Input
@@ -72,57 +70,24 @@ const Login = () => {
               onChange={changeEventHandler}
             />
           </div>
-          <div className="my-2">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="*******"
-              value={input.password}
-              name="password"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-4 my-5">
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={input.role === 'student'}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r1">Student</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="recruiter"
-                  checked={input.role === 'recruiter'}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r2">Recruiter</Label>
-              </div>
-            </RadioGroup>
-          </div>
+
           {loading ? (
             <Button className="w-full my-4">
               {' '}
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait...{' '}
             </Button>
           ) : (
-            <Button
-              className="text-lg w-full my-4 bg-[#6300b3] hover:border-2 hover:border-[#6300b3] hover:bg-transparent hover:text-[#6300b3]"
-              type="submit"
-            >
-              Login
-            </Button>
+            <Link to="/otpinput">
+              <Button
+                className="text-lg w-full my-4 bg-[#6300b3] hover:border-2 hover:border-[#6300b3] hover:bg-transparent hover:text-[#6300b3]"
+                type="submit"
+              >
+                Forgot Password
+              </Button>
+            </Link>
           )}
 
-          <div className="flex align-center justify-between">
+          {/* <div className="flex align-center justify-between">
             <span>
               Don't have an account?{' '}
               <Link to="/signup" className="text-blue-600 font-semibold">
@@ -132,11 +97,11 @@ const Login = () => {
             <Link to="/forgotpass" className="text-blue-600 font-semibold">
               Forgot Password?
             </Link>
-          </div>
+          </div> */}
         </form>
       </div>
     </>
   );
 };
 
-export default Login;
+export default ForgotPassword;
