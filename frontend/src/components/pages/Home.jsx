@@ -212,19 +212,19 @@ const Home = () => {
         </Slider>
       </div>
 
-      <div className="max-w-screen-2xl mx-auto px-4 py-8 w-full m-4">
-        <div className="text-center mb-16 md:mb-32">
+      <div className="max-w-screen-2xl mx-auto px-4 pt-14 w-full">
+        <div className="text-center mb-2 md:mb-32">
           <h1 className="text-xl md:text-5xl font-semibold underline text-[#6300b3]">
             View all
           </h1>
         </div>
-        <div className="text-center mb-2">
+        <div className="text-center">
           <button className="bg-gray-100 text-gray-700 px-6 py-2 text-xl md:text-2xl font-semibold z-10">
             Top companies hiring now
           </button>
           <hr className="-mt-5 z-0 text-gray-500" />
         </div>
-        <div className="flex flex-wrap justify-between items-center gap-4 md:gap-10 mt-8 me-20 px-10 py-20 hover:bg-white">
+        <div className="flex flex-wrap justify-between items-center gap-4 md:gap-10 me-20 px-10 py-10 hover:bg-white">
           <Carousel className="w-full max-w-xl mx-auto my-20">
             <CarouselContent>
               {imgCategory.map((cat, index) => (

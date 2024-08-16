@@ -4,6 +4,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
@@ -75,15 +83,28 @@ const Navbar = () => {
             >
               <i class="fa-solid fa-bars" name={open ? 'close' : 'bar'}></i>
             </div> */}
-            <div className="hidden ms-16 md:flex md:justify-between md:items-center transition-all duration-500 ease-in gap-5 font-semibold">
+            <div className="hidden md:flex md:justify-between md:items-center transition-all duration-500 ease-in gap-5 font-semibold">
               <Link to="/" className="text-[#6300b3] hover:text-[#6300b3]">
                 Home
               </Link>
               <Link
                 to="/findJobs"
-                className="text-gray-700 hover:text-[#6300b3]"
+                className="text-gray-700 hover:text-[#6300b3] focus:border-none"
               >
-                Find Jobs
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    Find Jobs <i className="ri-arrow-down-s-fill"></i>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <Link to="/jobsearch">Job Search</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link to="/joblisting">Job Listing</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </Link>
               <Link
                 to="/employers"
