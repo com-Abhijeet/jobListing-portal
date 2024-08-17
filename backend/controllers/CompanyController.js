@@ -111,26 +111,27 @@ export const deleteCompany = async(req, res) =>{
     }
 }
 
-export const getAllCompanies = async(req, res) =>{
-    try{
-        const company = await CompanyModel.find();
-        console.log("Company Fetched Successfully");
+export const getAllCompanies = async (req, res) => {
+    try {
+        const companies = await CompanyModel.find(); 
+        console.log("Companies Fetched Successfully");
         res.status(200).json({
-            message: "Company Fetched Successfully",
-            company
+            message: "Companies Fetched Successfully",
+            companies
         });
-    }catch(error){
-        console.log("ERROR IN FETCHING COMPANY _", error);
+    } catch (error) {
+        console.log("ERROR IN FETCHING COMPANIES _", error);
         res.status(500).json({
-            message: "Internal server error" , error
+            message: "Internal server error",
+            error
         });
     }
-}
+};
 
 export const getCompany = async(req, res) =>{
     try{
         const { id } = req.params;
-        const company = await CompanyModel.findById(id);
+        const company = await CompanyModel.findById({_id : id});
         console.log("Company Fetched Successfully");
         res.status(200).json({
             message: "Company Fetched Successfully",

@@ -59,7 +59,7 @@ export const registerUser = async (req, res) => {
         sendRegisterSuccessMail({recipient_email : email , fullName});
 
     } catch (error) {
-        console.log("Error in registering User:", error);
+        console.errorx("Error in registering User:", error);
         res.status(500).json(error);
     }
 };
