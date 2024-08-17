@@ -5,7 +5,7 @@ import authenticateToken from "../middleware/authenticateToken.js";
 const CompanyRouter = Router();
 
 CompanyRouter.post("/create", createCompany);
-CompanyRouter.get("/login", companyLogin);
+CompanyRouter.post("/login", companyLogin);
 CompanyRouter.put("/update/:id", authenticateToken, updateCompany);
 CompanyRouter.delete("/delete/:id", authenticateToken, deleteCompany);
 CompanyRouter.get("/get", authenticateToken, );

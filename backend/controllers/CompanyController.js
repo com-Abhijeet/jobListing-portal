@@ -1,6 +1,7 @@
 import CompanyModel from "../models/CompanyModel.js";
 import bcrypt from 'bcrypt';
 import { sendRegisterSuccessMail } from "../Mailer/sendRegisterSuccessMail.js";
+import { createToken } from "../helper/createToken.js";
 
 export const createCompany = async(req , res) =>{
     try{
@@ -25,7 +26,7 @@ export const createCompany = async(req , res) =>{
 
         const company = await newCompany.save();
         console.log("Company Created Successfully");
-        sendRegisterSuccessMail({email ,companyName});
+        sendRegisterSuccessMail({ recipient_email : email ,companyName});
         res.status(201).json({
             message: "Company Created Successfully",
             company
@@ -53,11 +54,21 @@ export const companyLogin = async(req, res)=>{
                 message: "Invalid Credentials"
             });
         }
-        console.log("Company Logged In Successfully");
-        res.status(200).json({
-            message: "Company Logged In Successfully",
-            company
-        });
+        const token = createToken(company._id, company.companyName);
+                console.log("Generated token" , token);
+                  
+                res.cookie('token', token, {
+                    httpOnly: false,
+                    maxAge: 24*60*60*1000,
+                    secure : process.env.NODE_ENV === 'production',
+                    sameSite: 'Strict'
+                    
+                });
+                console.log("Token set in Cokkie");
+                res.status(200).json({
+                    message: 'Login successful',
+                    token,
+                });
     }catch(error){
         console.log("ERROR IN LOGGING IN COMPANY _", error);
         res.status(500).json({
