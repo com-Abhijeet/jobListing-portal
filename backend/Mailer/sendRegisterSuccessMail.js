@@ -1,12 +1,15 @@
 import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const sendRegisterSuccessMail = async ({ recipient_email, fullName }) => {
     return new Promise((resolve, reject) => {
         var transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: 'testmailer850@gmail.com',
-                pass: 'doqe afnn yfsr ewdb',
+                user: process.env.SERVER_EMAIL,
+                pass: process.env.SERVER_EMAIL_PASSWORD,
             },
         });
 
