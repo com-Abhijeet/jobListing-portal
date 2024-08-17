@@ -1,69 +1,68 @@
 import UserModel from "../models/UserModel.js";
 import bcrypt from 'bcrypt'
 import { createToken } from "../helper/createToken.js";
-import sendEmail from "../helper/sendEmail.js";
+import { sendOTPEmail } from "../Mailer/sendOtpEmail.js";
+import { uploadResume } from "../helper/uploadResume.js";
+import { sendRegisterSuccessMail } from "../Mailer/sendRegisterSuccessMail.js";
 
-export const registerUser = async(req, res) => {
-    try{
+export const registerUser = async (req, res) => {
+    try {
         const {
             fullName, 
             email,
             password,
             contact,
-            address,
-            dateOfBirth,
-            gender,
-            education,
             role,
-            resume,
-            employmentStatus,
-            skills,
-            experience
-        } = req.body
+        } = req.body;
 
-        console.log(req.body);
+        console.log("Request body", req.body);
 
         const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds);
-        const hashedPassword = await bcrypt.hash(password,salt)
+        const hashedPassword = await bcrypt.hash(password, salt);
         
-        const isUser = await UserModel.findOne({email : email});
-        if(isUser){
+        const isUser = await UserModel.findOne({ email: email });
+        if (isUser) {
             return res.status(400).json({
                 message: "User already exists"
             });
         }
 
+        if (!req.file) {
+            console.log('File not found');
+            return res.status(400).json({
+                message: "Resume file is required"
+            });
+        }
+
+        const { buffer, mimetype } = req.file;
+        const resumeBuffer = buffer;
+        const resumeUrl = await uploadResume(fullName, resumeBuffer, 'resume');
+
         const user = new UserModel({
             fullName,
             email,
-            password : hashedPassword,
+            password: hashedPassword,
             contact,
-            address,
-            dateOfBirth,
-            gender,
-            education,
             role,
-            resume,
-            employmentStatus,
-            skills,
-            experience
+            resume : resumeUrl
         });
+
+        console.log("Updated User", user);
 
         await user.save();
         res.status(201).json({
-            message: "User Registered Successfully", user
+            message: "User Registered Successfully"
         });
         
         console.log("User Registered Successfully");
+        sendRegisterSuccessMail({recipient_email : email , fullName});
 
-    }catch(error){
-        console.log("Error in registering User : ", error);
-        res.status(500).json({
-            message : "Internal Server Error"}, 
-            error);
+    } catch (error) {
+        console.log("Error in registering User:", error);
+        res.status(500).json(error);
     }
-}
+};
 export const loginUser = async (req, res) =>{
     try{
         const {
@@ -107,10 +106,11 @@ export const loginUser = async (req, res) =>{
             }
         }
     }catch(error){
+        console.log(error);
         res.status(500).json({
             message: ' Internal Server Error' , error
         })
-        console.log(error);
+
     }
 }
 export const forgotPassword = async(req,res)=>{
@@ -128,7 +128,7 @@ export const forgotPassword = async(req,res)=>{
             user.OtpExpiry = Date.now() + 300000;
 
             await user.save();
-            await sendEmail({recipient_email: email, OTP});
+            await sendOTPEmail({recipient_email: email, OTP});
             res.status(200).json({
                 message: "OTP sent successfully"
             })
@@ -156,7 +156,9 @@ export const resetPassword = async (req, res) => {
                 const saltRounds = 10;
                 const salt = await bcrypt.genSalt(saltRounds);
                 const hashedPassword = await bcrypt.hash(newPassword, salt);
+
                 user.password = hashedPassword;
+                
                 await user.save();
                 res.status(200).json({
                     message: "Password reset successful"

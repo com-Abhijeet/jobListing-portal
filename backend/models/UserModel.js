@@ -19,15 +19,15 @@ const UserSchema = new mongoose.Schema({
     },
     address:{
         type: String,
-        required: true
+        required: false
     },
     dateOfBirth:{
         type: Date,
-        required: true
+        required: false
     },
     gender:{
         type: String,
-        required : true
+        required : false
     },
     education: [{
         institutionName: String,
@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema({
     },
     employmentStatus : {
         type: String,
-        required: true,
+        required: false,
         default: "Unemployed"
     },
     skills: [{

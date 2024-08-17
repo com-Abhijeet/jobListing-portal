@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-const sendEmail= async({ recipient_email, OTP })=> {
+export const sendOTPEmail = async({ recipient_email, OTP })=> {
     return new Promise((resolve, reject) => {
       var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -56,5 +56,4 @@ const sendEmail= async({ recipient_email, OTP })=> {
     });
   }
 
-  export default sendEmail;
   
