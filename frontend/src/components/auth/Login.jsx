@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '@/redux/authSlice';
+import { setLoading, setUser } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 
@@ -16,7 +16,6 @@ const Login = () => {
     password: '',
     role: '',
   });
-
   const { loading, user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,8 +34,8 @@ const Login = () => {
         },
         withCredentials: true,
       });
-      // console.log(res.data.success);
       if (res.data.success) {
+        dispatch(setUser(res.data.user));
         navigate('/');
         toast.success(res.data.message);
       }
@@ -47,7 +46,6 @@ const Login = () => {
       dispatch(setLoading(false));
     }
   };
-
   useEffect(() => {
     if (user) {
       navigate('/');

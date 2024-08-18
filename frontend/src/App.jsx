@@ -11,6 +11,7 @@ import OtpInput from './components/auth/OtpInput';
 import Reset from './components/auth/Reset';
 import { createContext, useState } from 'react';
 import Recovered from './components/auth/Recovered';
+import Profile from './components/pages/Profile';
 
 export const RecoveryContext = createContext();
 function App() {
@@ -43,6 +44,7 @@ function App() {
               <Route path="/otpinput" element={<OtpInput />} />
               <Route path="/reset" element={<Reset />} />
               <Route path="/recovered" element={<Recovered />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
             <Footer />
           </div>

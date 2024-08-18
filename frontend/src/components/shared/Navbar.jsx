@@ -19,9 +19,12 @@ import { Button } from '@/components/ui/button';
 import { FaUser } from 'react-icons/fa';
 import { MdLogout } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import store from '@/redux/store';
 
 const Navbar = () => {
-  const user = false;
+  // const user = true;
+  const { user } = useSelector((store) => store.auth);
 
   const [click, setClick] = useState(false);
 
@@ -165,7 +168,7 @@ const Navbar = () => {
                       className="flex gap-2 text-md text-[#6300b3]"
                       variant="link"
                     >
-                      <FaUser /> Profile
+                      <FaUser /> <Link to="/profile">Profile</Link>
                     </Button>
                     <hr />
                     <Button
