@@ -7,7 +7,7 @@ import { sendRegisterSuccessMail } from '../Mailer/sendRegisterSuccessMail.js';
 
 export const registerUser = async (req, res) => {
   try {
-    const { fullName, email, password, contact, role } = req.body;
+    const { fullName, email, password, phoneNumber, role } = req.body;
 
     console.log('Request body', req.body);
 
@@ -34,10 +34,10 @@ export const registerUser = async (req, res) => {
     const resumeUrl = await uploadResume(fullName, resumeBuffer, 'resume');
 
     const user = new UserModel({
-      fullName,
+      fullName : fullName,
       email,
       password: hashedPassword,
-      contact,
+      contact : phoneNumber,
       role,
       resume: resumeUrl,
     });
@@ -45,14 +45,14 @@ export const registerUser = async (req, res) => {
     console.log('Updated User', user);
 
     await user.save();
-    res.status(201).json({
+    res.status(200).json({
       message: 'User Registered Successfully',
     });
 
     console.log('User Registered Successfully');
     sendRegisterSuccessMail({ recipient_email: email, fullName });
   } catch (error) {
-    console.errorx('Error in registering User:', error);
+    console.error('Error in registering User:', error);
     res.status(500).json(error);
   }
 };

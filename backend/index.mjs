@@ -23,10 +23,10 @@ app.use(cors(corsOptions));
 app.use(express.json()); 
 
 
-app.use('/api/v1/User', UserRouter);
-app.use('/api/v1/Job', JobRouter);
-app.use('/api/v1/Company' , CompanyRouter);
-app.use('/api/v1/Application', ApplicationRouter );
+app.use('/api/v1/user', UserRouter);
+app.use('/api/v1/job', JobRouter);
+app.use('/api/v1/company' , CompanyRouter);
+app.use('/api/v1/application', ApplicationRouter );
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

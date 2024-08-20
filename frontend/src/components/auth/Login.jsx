@@ -28,13 +28,13 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+      const res = await axios.post(`http://localhost:3000/api/v1/user/login`, input, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
       });
-      if (res.data.success) {
+      if (res.status === 200) {
         dispatch(setUser(res.data.user));
         navigate('/');
         toast.success(res.data.message);

@@ -13,7 +13,7 @@ import { setLoading } from '@/redux/authSlice';
 
 const Signup = () => {
   const [input, setInput] = useState({
-    fullname: '',
+    fullName: '',
     email: '',
     phoneNumber: '',
     password: '',
@@ -35,7 +35,7 @@ const Signup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('fullname', input.fullname);
+    formData.append('fullName', input.fullName);
     formData.append('email', input.email);
     formData.append('phoneNumber', input.phoneNumber);
     formData.append('password', input.password);
@@ -51,7 +51,7 @@ const Signup = () => {
           withCredentials: true,
         },
       });
-      if (res.data.success) {
+      if (res.status===200) {
         navigate('/login');
         toast.success(res.data.message);
       }
@@ -80,8 +80,8 @@ const Signup = () => {
             <Input
               type="text"
               placeholder="Sam Jose"
-              value={input.fullname}
-              name="fullname"
+              value={input.fullName}
+              name="fullName"
               onChange={changeEventHandler}
             />
           </div>
