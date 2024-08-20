@@ -29,7 +29,7 @@ const Navbar = () => {
         <Link to="/" className="text-[#6300b3] hover:text-[#6300b3] p-2">
           Home
         </Link>
-        <Link to="/findJobs" className="text-gray-700 hover:text-[#6300b3] p-2">
+        <Link to="/jobs" className="text-gray-700 hover:text-[#6300b3] p-2">
           Find Jobs
         </Link>
         <Link
@@ -80,7 +80,7 @@ const Navbar = () => {
                 Home
               </Link>
               <Link
-                to="/findJobs"
+                to="/jobs"
                 className="text-gray-700 hover:text-[#6300b3]"
               >
                 Find Jobs
