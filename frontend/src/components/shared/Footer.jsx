@@ -24,7 +24,7 @@ const Footer = () => {
             <a href="/about" className="hover:text-[#6300b3]">
               About
             </a>
-            <a href="/contact" className="hover:text-[#6300b3]">
+            <a href="/contact" className="text-[#6300b3] hover:text-[#6300b3]">
               Contact
             </a>
             <a href="/admin" className="hover:text-[#6300b3]">
