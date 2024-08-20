@@ -1,37 +1,25 @@
-<<<<<<< HEAD
 import './App.css';
-import Footer from './components/shared/Footer';
 import Navbar from './components/shared/Navbar';
+import Footer from './components/shared/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Jobs from './components/pages/Jobs';
+
 import Home from './components/pages/Home';
-import JobSearch from './components/pages/JobSearch';
-import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
+import JobSearch from './components/pages/JobSearch';
 import ForgotPassword from './components/auth/ForgotPassword';
 import OtpInput from './components/auth/OtpInput';
 import Reset from './components/auth/Reset';
-import { createContext, useState } from 'react';
 import Recovered from './components/auth/Recovered';
 import Profile from './components/pages/Profile';
 import Companies from './components/admin/Companies';
 import CreateCompany from './components/admin/CreateCompany';
 import CompanySetup from './components/admin/CompanySetup';
-=======
-import "./App.css";
-import Footer from "./components/shared/Footer";
-import Navbar from "./components/shared/Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/pages/Home";
-import JobSearch from "./components/pages/JobSearch";
-import Signup from "./components/auth/Signup";
-import Login from "./components/auth/Login";
-import Jobapp from "./components/pages/Jobapp";
-import Job from "./components/pages/Jobs";
-
-import Jobs from "./components/pages/Jobs";
-import Profile from "./components/pages/Profile";
-import JobDescription from "./components/pages/JobDescription";
->>>>>>> 5b4fa0fc773d674e8f13faa49583fd32ce582789
+import Jobapp from './components/pages/Jobapp';
+import { createContext, useState } from 'react';
+import JobDescription from './components/pages/JobDescription';
 
 export const RecoveryContext = createContext();
 function App() {
@@ -49,7 +37,6 @@ function App() {
 
   return (
     <>
-<<<<<<< HEAD
       <RecoveryContext.Provider
         value={{ page, setPage, otp, setOTP, setEmail, email }}
       >
@@ -73,29 +60,14 @@ function App() {
                 element={<CreateCompany />}
               />
               <Route path="/admin/companies/:id" element={<CompanySetup />} />
+              <Route path="/joblisting" element={<Jobs />} />
+              <Route path="/jobapp" element={<Jobapp />} />
+              <Route path="/description/:id" element={<JobDescription />} />
             </Routes>
             <Footer />
           </div>
         </Router>
       </RecoveryContext.Provider>
-=======
-      <Router>
-        <div className="font-inter">
-          <Navbar />
-          <Routes>
-            <Route exact path="/" element={<Jobapp />} />
-            <Route exact path="/jobs" element={<Jobs />} />
-            <Route exact path="/profile" element={<Profile />} />
-            <Route exact path="/description/:id" element={<JobDescription />} />
-
-            {/* <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />*/}
-            <Route path="/jobsearch" element={<JobSearch />} />
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
->>>>>>> 5b4fa0fc773d674e8f13faa49583fd32ce582789
     </>
   );
 }
