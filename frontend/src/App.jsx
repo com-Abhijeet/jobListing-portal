@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/shared/Navbar';
-// import Footer from './components/shared/Footer';
+import Footer from './components/shared/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Jobs from './components/pages/Jobs';
@@ -60,11 +60,11 @@ function App() {
                 element={<CreateCompany />}
               />
               <Route path="/admin/companies/:id" element={<CompanySetup />} />
-              <Route path="/jobs" element={<Jobs />} />
+              <Route path="/joblisting" element={<Jobs />} />
               <Route path="/jobapp" element={<Jobapp />} />
               <Route path="/description/:id" element={<JobDescription />} />
             </Routes>
-            {/* <Footer /> */}
+            <Footer />
           </div>
         </Router>
       </RecoveryContext.Provider>
