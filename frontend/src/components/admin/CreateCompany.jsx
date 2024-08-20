@@ -61,7 +61,7 @@ const CreateCompany = () => {
           >
             Cancel
           </Button>
-          <Button className="" onClick={registerNewCompany}>
+          <Button className="bg-[#6300b3]" onClick={registerNewCompany}>
             Continue
           </Button>
         </div>

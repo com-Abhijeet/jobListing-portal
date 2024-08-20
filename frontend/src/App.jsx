@@ -14,6 +14,7 @@ import Recovered from './components/auth/Recovered';
 import Profile from './components/pages/Profile';
 import Companies from './components/admin/Companies';
 import CreateCompany from './components/admin/CreateCompany';
+import CompanySetup from './components/admin/CompanySetup';
 
 export const RecoveryContext = createContext();
 function App() {
