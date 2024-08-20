@@ -15,7 +15,8 @@ export const createJob = async(req , res) =>{
             locationCity,
             employmentType,
             experience,
-            skills
+            skills,
+            postedBy
         } = req.body
 
         const newJob = new JobModel({
@@ -32,7 +33,7 @@ export const createJob = async(req , res) =>{
             employmentType,
             experience,
             skills,
-            postedBy: req.user._id
+            postedBy
         });
 
         const job = await newJob.save();

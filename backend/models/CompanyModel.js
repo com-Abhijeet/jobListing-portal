@@ -21,10 +21,6 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    dateOfEstablishment:{
-        type: Date,
-        required: false
-    },
     companyType:{
         type: String,
         required: false

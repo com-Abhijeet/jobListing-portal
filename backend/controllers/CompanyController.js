@@ -76,23 +76,63 @@ export const companyLogin = async(req, res)=>{
             });
     }
 }
-export const updateCompany = async(req, res) =>{
-    try{
+export const updateCompany = async (req, res) => {
+    try {
         const { id } = req.params;
-        const { companyName, email, password, contact } = req.body;
-        const company = await CompanyModel.findByIdAndUpdate(id, { companyName, email, password, contact }, { new: true });
-        console.log("Company Updated Successfully");
+        const {
+            companyName,
+            email,
+            contact,
+            address,
+            companyType,
+            companySize,
+            companyDescription,
+            companyWebsite,
+            companyIndustry,
+            companyJobs,
+            companyRecruiters
+        } = req.body;
+
+        console.log(id);
+
+        const isCompany = await CompanyModel.findById(id);
+
+        if (!isCompany) {
+            return res.status(404).json({
+                message: "Company not found"
+            });
+        }
+
+        const company = await CompanyModel.findByIdAndUpdate(
+            id,
+            {
+                companyName,
+                email,
+                contact,
+                address,
+                companyType,
+                companySize,
+                companyDescription,
+                companyWebsite,
+                companyIndustry,
+                companyJobs,
+                companyRecruiters
+            },
+            { new: true }
+        );
+
         res.status(200).json({
-            message: "Company Updated Successfully",
+            message: "Company updated successfully",
             company
         });
-    }catch(error){
+    } catch (error) {
         console.log("ERROR IN UPDATING COMPANY _", error);
         res.status(500).json({
-            message: "Internal server error" , error
+            message: "Internal server error",
+            error
         });
     }
-}
+};
 
 export const deleteCompany = async(req, res) =>{
     try{
