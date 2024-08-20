@@ -14,9 +14,9 @@ export const sendRegisterSuccessMail = async ({ recipient_email, fullName }) => 
         });
 
         const mail_configs = {
-            from: 'Job-Listings',
+            from: 'AlwaysApply',
             to: recipient_email,
-            subject: "Welcome to Job Listings!",
+            subject: "Welcome to AlwaysApply!",
             html: `<!DOCTYPE html>
 <html lang="en">
 <head>

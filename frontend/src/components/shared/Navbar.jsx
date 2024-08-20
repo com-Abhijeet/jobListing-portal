@@ -26,6 +26,8 @@ import { USER_API_END_POINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
 import Profile from './../pages/Profile';
+import Cookies from "js-cookie"; 
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   // const user = true;
@@ -36,6 +38,8 @@ const Navbar = () => {
   const [click, setClick] = useState(false);
 
   const handleClick = () => setClick(!click);
+  
+  const [userName , setUserName] = useState();
 
   const logoutHandler = async () => {
     try {
@@ -52,6 +56,8 @@ const Navbar = () => {
       toast.error(error.response.data.message);
     }
   };
+
+
 
   const mobileContent = (
     <>

@@ -9,7 +9,7 @@ const JobRouter = express.Router();
 
 JobRouter.post("/create", authenticateToken, createJob);
 JobRouter.get("/get/:id",authenticateToken, getJob);
-JobRouter.get("/getAll",authenticateToken, getAllJobs);
+JobRouter.get("/get",authenticateToken, getAllJobs);
 JobRouter.put("/update", authenticateToken ,updateJob);
 JobRouter.delete("/delete/:id", authenticateToken, deleteJob);
 

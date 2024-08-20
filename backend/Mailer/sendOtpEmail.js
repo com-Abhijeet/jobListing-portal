@@ -14,14 +14,14 @@ export const sendOTPEmail = async({ recipient_email, OTP })=> {
       });
   
       const mail_configs = {
-        from: 'Job-Listings',
+        from: 'AlwaysApply',
         to: recipient_email,
         subject: "Job Listing's   PASSWORD RECOVERY",
         html: `<!DOCTYPE html>
   <html lang="en" >
   <head>
     <meta charset="UTF-8">
-    <title>Job-Listings</title>
+    <title>AlwaysApply</title>
     
   
   </head>
