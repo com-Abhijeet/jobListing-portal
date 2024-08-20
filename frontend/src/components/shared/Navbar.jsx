@@ -18,17 +18,40 @@ import { FaBars } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import { FaUser } from 'react-icons/fa';
 import { MdLogout } from 'react-icons/md';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import store from '@/redux/store';
+import axios from 'axios';
+import { USER_API_END_POINT } from '@/utils/constant';
+import { setUser } from '@/redux/authSlice';
+import { toast } from 'sonner';
+import Profile from './../pages/Profile';
 
 const Navbar = () => {
   // const user = true;
   const { user } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [click, setClick] = useState(false);
 
   const handleClick = () => setClick(!click);
+
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        dispatch(setUser(null));
+        navigate('/');
+        toast.success(res.data.message);
+      }
+    } catch {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
 
   const mobileContent = (
     <>
@@ -41,7 +64,7 @@ const Navbar = () => {
           Home
         </Link>
         <Link to="/findJobs" className="text-gray-700 hover:text-[#6300b3] p-2">
-          Find Jobs
+          Jobs
         </Link>
         <Link
           to="/employers"
@@ -86,46 +109,76 @@ const Navbar = () => {
             >
               <i class="fa-solid fa-bars" name={open ? 'close' : 'bar'}></i>
             </div> */}
-            <div className="hidden md:flex md:justify-between md:items-center transition-all duration-500 ease-in gap-5 font-semibold">
-              <Link to="/" className="text-[#6300b3] hover:text-[#6300b3]">
-                Home
-              </Link>
-              <Link
-                to="/findJobs"
-                className="text-gray-700 hover:text-[#6300b3] focus:border-none"
-              >
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    Find Jobs <i className="ri-arrow-down-s-fill"></i>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Link to="/jobsearch">Job Search</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link to="/joblisting">Job Listing</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </Link>
-              <Link
-                to="/employers"
-                className="text-gray-700 hover:text-[#6300b3]"
-              >
-                Employers
-              </Link>
-              <Link to="/admin" className="text-gray-700 hover:text-[#6300b3]">
-                Admin
-              </Link>
-              <Link
-                to="/aboutUs"
-                className="text-gray-700 hover:text-[#6300b3]"
-              >
-                About Us
-              </Link>
+            <div className="hidden md:flex md:justify-between md:items-center transition-all duration-500 ease-in gap-5 font-semibold ms-24">
+              {user && user.role === 'recruiter' ? (
+                <>
+                  <Link
+                    to="/admin/companies"
+                    className="text-[#6300b3] hover:text-[#6300b3]"
+                  >
+                    Companies
+                  </Link>
+                  <Link
+                    to="/admin/jobs"
+                    className="text-gray-700 hover:text-[#6300b3] focus:border-none"
+                  >
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        Jobs <i className="ri-arrow-down-s-fill"></i>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <Link to="/jobsearch">Job Search</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <Link to="/joblisting">Job Listing</Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/" className="text-[#6300b3] hover:text-[#6300b3]">
+                    Home
+                  </Link>
+                  <Link
+                    to="/jobs"
+                    className="text-gray-700 hover:text-[#6300b3] focus:border-none"
+                  >
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        Jobs <i className="ri-arrow-down-s-fill"></i>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <Link to="/jobsearch">Job Search</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <Link to="/joblisting">Job Listing</Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </Link>
+
+                  <Link
+                    to="/admin"
+                    className="text-gray-700 hover:text-[#6300b3]"
+                  >
+                    Admin
+                  </Link>
+                  <Link
+                    to="/aboutUs"
+                    className="text-gray-700 hover:text-[#6300b3]"
+                  >
+                    About Us
+                  </Link>
+                </>
+              )}
             </div>
-            <div className="hidden ms-16 justify-end md:flex md:items-center md:justify-between gap-3">
+            <div className="hidden ms-24 justify-end md:flex md:items-center md:justify-between gap-3">
               <div className="flex gap-3">
                 <a
                   href="/contact"
@@ -158,20 +211,30 @@ const Navbar = () => {
                   <PopoverTrigger asChild>
                     <Avatar className="cursor-pointer bg-amber-300">
                       <AvatarImage
-                        src="https://github.com/shadcn.png"
+                        src={user?.Profile?.profilePhoto}
                         className="text-[#6300b3]"
                       />
                     </Avatar>
+                    <div>
+                      <h4 className="font-medium">{user?.fullname}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {user?.bio}
+                      </p>
+                    </div>
                   </PopoverTrigger>
                   <PopoverContent className="w-40">
-                    <Button
-                      className="flex gap-2 text-md text-[#6300b3]"
-                      variant="link"
-                    >
-                      <FaUser /> <Link to="/profile">Profile</Link>
-                    </Button>
+                    {user && user.role === 'student' && (
+                      <Button
+                        className="flex gap-2 text-md text-[#6300b3]"
+                        variant="link"
+                      >
+                        <FaUser /> <Link to="/profile">Profile</Link>
+                      </Button>
+                    )}
+
                     <hr />
                     <Button
+                      onClick={logoutHandler}
                       className="flex gap-2 text-md text-[#6300b3]"
                       variant="link"
                     >

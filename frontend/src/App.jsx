@@ -12,6 +12,8 @@ import Reset from './components/auth/Reset';
 import { createContext, useState } from 'react';
 import Recovered from './components/auth/Recovered';
 import Profile from './components/pages/Profile';
+import Companies from './components/admin/Companies';
+import CreateCompany from './components/admin/CreateCompany';
 
 export const RecoveryContext = createContext();
 function App() {
@@ -45,6 +47,13 @@ function App() {
               <Route path="/reset" element={<Reset />} />
               <Route path="/recovered" element={<Recovered />} />
               <Route path="/profile" element={<Profile />} />
+              //admin part start
+              <Route path="/admin/companies" element={<Companies />} />
+              <Route
+                path="/admin/companies/create"
+                element={<CreateCompany />}
+              />
+              <Route path="/admin/companies/:id" element={<CompanySetup />} />
             </Routes>
             <Footer />
           </div>

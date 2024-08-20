@@ -4,6 +4,8 @@ import { Avatar, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 import { Bookmark } from 'lucide-react';
 import { Input } from '../ui/input';
+import { useSelector } from 'react-redux';
+import store from '@/redux/store';
 
 const initialJobs = [
   {
@@ -70,6 +72,15 @@ const initialJobs = [
 ];
 
 const JobSearch = () => {
+  const daysAgoFun = (mongodvTime) => {
+    const createdAt = new Date(mongodvTime);
+    const now = new Date();
+    const timeDiff = now - createdAt;
+    return Math.floor(timeDiff / (1000 * 24 * 60 * 60));
+  };
+
+  const { allJobs } = useSelector((store) => store.job);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [jobs, setJobs] = useState(initialJobs);
 
@@ -103,59 +114,74 @@ const JobSearch = () => {
             Search Job
           </Button>
         </div>
-        <div className="grid grid-cols-3 gap-4 mt-16">
-          {jobs.map((job) => (
-            <div
-              key={job.id}
-              className="p-5 rounded-md border-[#8d8296] shadow-2xl bg-white shadow-[#986dc0]"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-600">{job.daysAgo} days ago</p>
-                <Button variant="outline" className="rounded-full" size="icon">
-                  <Bookmark />
-                </Button>
-              </div>
+        {allJobs.length <= 0 ? (
+          <span>Job Not Found</span>
+        ) : (
+          <div className="grid grid-cols-3 gap-4 mt-16">
+            {jobs.map((job) => (
+              <div
+                key={job?._id}
+                className="p-5 rounded-md border-[#8d8296] shadow-2xl bg-white shadow-[#986dc0]"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-gray-600">
+                    {daysAgoFun(job?.createdAt) === 0
+                      ? 'Today'
+                      : `${daysAgoFun(job?.createdAt)}`}{' '}
+                    days ago
+                  </p>
+                  <Button
+                    variant="outline"
+                    className="rounded-full"
+                    size="icon"
+                  >
+                    <Bookmark />
+                  </Button>
+                </div>
 
-              <div className="flex items-center gap-2 my-2">
-                <Button className="bg-transparent" variant="outline">
-                  <Avatar>
-                    <AvatarImage src="https://media.istockphoto.com/id/952019778/vector/momentum-symbol.jpg?s=612x612&w=is&k=20&c=UcuBjwrgHH1fS8_au4fB_WCS2IQ-PUKQcO5Wbuj03n8=" />
-                  </Avatar>
-                </Button>
+                <div className="flex items-center gap-2 my-2">
+                  <Button className="bg-transparent" variant="outline">
+                    <Avatar>
+                      <AvatarImage src="https://media.istockphoto.com/id/952019778/vector/momentum-symbol.jpg?s=612x612&w=is&k=20&c=UcuBjwrgHH1fS8_au4fB_WCS2IQ-PUKQcO5Wbuj03n8=" />
+                    </Avatar>
+                  </Button>
+                  <div>
+                    <h1 className="font-medium text-lg">{job?.company}</h1>
+                    <p className="text-sm text-gray-500">{job?.location}</p>
+                  </div>
+                </div>
                 <div>
-                  <h1 className="font-medium text-lg">{job.company}</h1>
-                  <p className="text-sm text-gray-500">{job.location}</p>
+                  <h1 className="font-bold text-lg my-2">{job?.title}</h1>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {job?.description}
+                  </p>
+                </div>
+                <div>
+                  <Badge className="text-blue-700 font-bold" variant="ghost">
+                    {job?.positions} Positions
+                  </Badge>
+                  <Badge className="text-[#02f854] font-bold" variant="ghost">
+                    {job?.type}
+                  </Badge>
+                  <Badge className="text-[#7209b7] font-bold" variant="ghost">
+                    {job.salary}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-4 mt-4">
+                  <Button
+                    className="border-2 border-[#6300b3]"
+                    variant="outline"
+                  >
+                    Details
+                  </Button>
+                  <Button className="bg-[#6300b3]" variant="">
+                    Save For Later
+                  </Button>
                 </div>
               </div>
-              <div>
-                <h1 className="font-bold text-lg my-2">{job.title}</h1>
-                <p className="text-sm text-gray-600 mb-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur, totam.
-                </p>
-              </div>
-              <div>
-                <Badge className="text-blue-700 font-bold" variant="ghost">
-                  {job.positions} Positions
-                </Badge>
-                <Badge className="text-[#02f854] font-bold" variant="ghost">
-                  {job.type}
-                </Badge>
-                <Badge className="text-[#7209b7] font-bold" variant="ghost">
-                  {job.salary}
-                </Badge>
-              </div>
-              <div className="flex items-center gap-4 mt-4">
-                <Button className="border-2 border-[#6300b3]" variant="outline">
-                  Details
-                </Button>
-                <Button className="bg-[#6300b3]" variant="">
-                  Save For Later
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
