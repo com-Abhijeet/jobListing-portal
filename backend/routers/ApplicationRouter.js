@@ -4,7 +4,7 @@ import authenticateToken from '../middleware/authenticateToken.js'
 
 const ApplicationRouter = Router()
 
-ApplicationRouter.post('/create', authenticateToken, applyJob)
+ApplicationRouter.post('/apply/:jobId', authenticateToken, applyJob)
 ApplicationRouter.get('/update/:id', authenticateToken, getApplicationsByJobId)
 ApplicationRouter.get('/delete/:id', authenticateToken, getApplicationsByUserId)
 ApplicationRouter.put('/get/:id', authenticateToken, updateApplicationStatus)

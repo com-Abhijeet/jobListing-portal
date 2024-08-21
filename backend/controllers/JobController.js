@@ -1,4 +1,5 @@
 import JobModel from "../models/JobModel.js";
+import ApplicationModel from "../models/ApplicationModel.js";
 
 export const createJob = async(req , res) =>{
     try{
@@ -119,6 +120,7 @@ export const deleteJob = async(req , res) => {
 export const getJob = async(req , res) => {
     try{
         const job = await JobModel.findOne({_id: req.params.id});
+        
         console.log("Job Found Successfully" , job);
         res.status(200).json({
             message: "Job Found Successfully",

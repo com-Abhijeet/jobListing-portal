@@ -1,36 +1,48 @@
-import ApplicationModel from '../models/ApplicationModel.js'
+import ApplicationModel from '../models/ApplicationModel.js';
+import UserModel from '../models/UserModel.js';
+import JobModel from '../models/JobModel.js';
 
-export const applyJob = async(req , res) =>{
-    try{
-        const {
-            job,
-            company,
-            user,
-            status
-        } = req.body
-        
+export const applyJob = async (req, res) => {
+    try {
+        const { jobId } = req.params;
+        const { user, status } = req.body;
+
+        // Create a new application
         const newApplication = new ApplicationModel({
-            job,
-            company,
-            user,
+            job: jobId,
+            applicant: user,
             status
         });
 
         const application = await newApplication.save();
+        console.log("applied");
+
+        // Update the user's jobApplications array
+        await UserModel.findByIdAndUpdate(user, {
+            $push: { jobApplications: { jobID: jobId, status: status } }
+        });
+        console.log("Updated user application successfully");
+
+        // Update the job's applicants array
+        await JobModel.findByIdAndUpdate(jobId, {
+            $push: { applicants: user }
+        });
+        console.log("Updated Job application successfully");
         console.log("Application Created Successfully");
+
         res.status(201).json({
-            message: "Application Created Successfully",
+            message: "Applied SuccessFully",
             application
         });
 
-    }catch(error){
+    } catch (error) {
         console.log("ERROR IN CREATING APPLICATION _-_-_-_", error);
         res.status(500).json({
-            message: "Internal server error" , error
+            message: "Internal server error",
+            error
         });
     }
-}
-
+};
 export const getApplicationsByJobId = async(req , res) =>{
     try{
         const jobId = req.body;

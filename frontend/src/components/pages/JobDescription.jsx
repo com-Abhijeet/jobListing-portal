@@ -12,33 +12,48 @@ import Cookies from 'js-cookie';
 const JobDescription = () => {
     const {singleJob} = useSelector(store => store.job);
     const {user} = useSelector(store=>store.auth);
-    const isIntiallyApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+    const isIntiallyApplied = singleJob?.applicants?.some(application => application.applicant === user?._id) || false;
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
+
+    console.log("singleJOB" , singleJob);
+    
 
     const params = useParams();
     const jobId = params.id;
     const dispatch = useDispatch();
 
     const token = Cookies.get('token');
+    useEffect(() => {
+        if (singleJob?.applicants?.some(applicant => applicant === user?._id)) {
+            setIsApplied(true);
+        }
+    }, [singleJob, user]);
 
     const applyJobHandler = async () => {
         try {
-            const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {withCredentials:true, headers:{
-                Authorization: `Bearer ${token}`
-            }});
-            
-            if(res.status === 200){
+            // console.log("company" , singleJob.company);
+            const res = await axios.post(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
+                // company: singleJob.company,
+                user: user._id,
+                status: 'applied'
+            }, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+    
+            if (res.status === 201) {
                 setIsApplied(true); // Update the local state
-                const updatedSingleJob = {...singleJob, applications:[...singleJob.applications,{applicant:user?._id}]}
+                const updatedSingleJob = { ...singleJob, applicants: [...singleJob.applicants, { applicant: user?._id }] };
                 dispatch(setSingleJob(updatedSingleJob)); // helps us to real time UI update
                 toast.success(res.data.message);
-
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || 'Error applying for job');
         }
-    }
+    };
 
     useEffect(()=>{
         const fetchSingleJob = async () => {
@@ -52,7 +67,7 @@ const JobDescription = () => {
 
                 if(res.status === 200){
                     dispatch(setSingleJob(res.data.job));
-                    setIsApplied(res.data.job.applications.some(application=>application.applicant === user?._id)) // Ensure the state is in sync with fetched data
+                    setIsApplied(Array.isArray(singleJob.applicants) && singleJob.applicants.some(application => application.applicant === user?._id)); // Ensure the state is in sync with fetched data
                 }
             } catch (error) {
                 console.log(error);
@@ -87,7 +102,7 @@ const JobDescription = () => {
                 <h1 className='font-bold my-1'>Description: <span className='pl-4 font-normal text-gray-800'>{singleJob?.description}</span></h1>
                 <h1 className='font-bold my-1'>Experience: <span className='pl-4 font-normal text-gray-800'>{singleJob?.experience} yrs</span></h1>
                 <h1 className='font-bold my-1'>Salary: <span className='pl-4 font-normal text-gray-800'>{singleJob?.maxSalary}LPA</span></h1>
-                <h1 className='font-bold my-1'>Total Applicants: <span className='pl-4 font-normal text-gray-800'>{singleJob?.applications?.length}</span></h1>
+                <h1 className='font-bold my-1'>Total Applicants: <span className='pl-4 font-normal text-gray-800'>{singleJob?.applicants?.length}</span></h1>
                 <h1 className='font-bold my-1'>Posted Date: <span className='pl-4 font-normal text-gray-800'>{singleJob?.createdAt.split("T")[0]}</span></h1>
             </div>
         </div>
