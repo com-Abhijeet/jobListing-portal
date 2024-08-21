@@ -1,18 +1,18 @@
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Badge } from "../ui/badge";
-import React, { useState } from "react";
-import { Button } from "../ui/button";
-import {  Contact, Mail, Pen } from "lucide-react";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import AppliedJobTable from "./AppliedJobTable";
-import UpdateProfile from "./UpdateProfile";
+import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
+import { Badge } from '../ui/badge';
+import React, { useState } from 'react';
+import { Button } from '../ui/button';
+import { Contact, Mail, Pen } from 'lucide-react';
+import { Label } from '@radix-ui/react-dropdown-menu';
+import AppliedJobTable from './AppliedJobTable';
+import UpdateProfile from './UpdateProfile';
 
-const skills = ["html", "css", "javascript", "react"];
+const skills = ['html', 'css', 'javascript', 'react'];
 const isResume = true;
 
 const Profile = () => {
-  const [open,setOpen] = useState(false);
- 
+  const [open, setOpen] = useState(false);
+
   return (
     <div>
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
@@ -29,7 +29,7 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <Button onClick={()=>(true)} className="text-right" variant="outline">
+          <Button onClick={() => true} className="text-right" variant="outline">
             <Pen />
           </Button>
         </div>
@@ -44,13 +44,13 @@ const Profile = () => {
           </div>
         </div>
         <div className="my-5">
-      <h1>Skills</h1>
-      <div className="flex items-center gap-1">
-        {skills.map((item, index) => (
-          <Badge key={index}>{item}</Badge>
-        ))}
-      </div>
-    </div>
+          <h1>Skills</h1>
+          <div className="flex items-center gap-1">
+            {skills.map((item, index) => (
+              <Badge key={index}>{item}</Badge>
+            ))}
+          </div>
+        </div>
         <div className="grid w-full max-w-5m items-center gap-1.5">
           <Label className="text-md font-bold">Resume</Label>
           {isResume ? (
@@ -59,19 +59,18 @@ const Profile = () => {
               className="text-blue-500 w-full hover:underline cursor-pointer"
               target="blank"
             >
-              You Tube
+              Resume
             </a>
           ) : (
             <span>Not Applicable</span>
           )}
         </div>
-        
       </div>
       <div className="max-w-4xl mx-auto bg-white rounded-2xl">
-          <h1 className="font-bold text-lg my-5">All Applied Jobs</h1>
+        <h1 className="font-bold text-lg my-5">All Applied Jobs</h1>
         <AppliedJobTable></AppliedJobTable>
-        </div>
-        <UpdateProfile open={open} setOpen={setOpen}/>
+      </div>
+      <UpdateProfile open={open} setOpen={setOpen} />
     </div>
   );
 };

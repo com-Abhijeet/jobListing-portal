@@ -41,7 +41,7 @@ const Login = () => {
       if (res.status === 200) {
         dispatch(setUser(res.data.user)); // Set user in redux store
         toast.success(res.data.message); // Show success message
-        navigate('/profile'); // Redirect to profile after login
+        navigate('/'); // Redirect to profile after login
       }
     } catch (error) {
       console.log(error);

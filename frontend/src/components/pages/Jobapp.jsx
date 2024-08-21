@@ -1,82 +1,48 @@
-import React, { useState } from "react";
-import Select from "react-select";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { RadioGroup } from "@/components/ui/radio-group";
-import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
-import { USER_API_END_POINT } from "@/utils/constant";
-import { toast } from "sonner";
-import axios from "axios";
+import React, { useState } from 'react';
+import Select from 'react-select';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { RadioGroup } from '@/components/ui/radio-group';
+import { Button } from '../ui/button';
+import { useNavigate } from 'react-router-dom';
+import { APPLICATION_API_END_POINT } from '@/utils/constant';
+import { toast } from 'sonner';
+import axios from 'axios';
 
+// Your predefined options
 const options = [
-  { value: "html", label: "HTML" },
-  { value: "css", label: "CSS" },
-  { value: "javascript", label: "JAVASCRIPT" },
-  { value: "bootstrap", label: "BOOTSTRAP" },
-  { value: "react", label: "REACT" },
-  { value: "angular", label: "Angular" },
-  { value: "node", label: "NODE" },
-  { value: "mongodb", label: "MONGODB" },
+  /*...*/
 ];
-
 const job_role = [
-  { value: "Frontend", label: "Frontend Developer" },
-  { value: "backend", label: "Backend Developer" },
-  { value: "ui/ux", label: "UI/UX Developer" },
-  { value: "fullstack", label: "Fullstack Developer" },
-  { value: "java", label: "Java Developer" },
+  /*...*/
 ];
-
 const job_type = [
-  { value: "fulltime", label: "Full Time" },
-  { value: "parttime", label: "Part Time" },
+  /*...*/
 ];
-
 const _experience = [
-  { value: "1", label: "1 year" },
-  { value: "2", label: "2 year" },
-  { value: "3", label: "3 year" },
-  { value: "4", label: "4 year" },
-  { value: "5", label: "5 year" },
+  /*...*/
 ];
-
 const _vaccancies = [
-  { value: "3", label: "3" },
-  { value: "2", label: "2" },
-  { value: "5", label: "5" },
-  { value: "10", label: "10" },
-  { value: "6", label: "6" },
+  /*...*/
 ];
-
 const job_level = [
-  { value: "junior", label: "Junior" },
-  { value: "mid", label: "Mid" },
-  { value: "senior", label: "senior" },
+  /*...*/
 ];
-
 const _country = [
-  { value: "USA", label: "USA" },
-  { value: "UK", label: "UK" },
-  { value: "Japan", label: "JAPAN" },
-  { value: "India", label: "INDIA" },
+  /*...*/
 ];
-
 const _city = [
-  { value: "Pune", label: "Pune" },
-  { value: "Mumbai", label: "Mumbai" },
-  { value: "Bangalore", label: "Bangalore" },
-  { value: "Hydrabad", label: "Hydrabad" },
+  /*...*/
 ];
 
 const Jobapp = () => {
   const [input, setInput] = useState({
-    jobTitle: "",
-    minSalary: "",
-    maxSalary: "",
-    jobDescription: "",
-    role: "",
+    jobTitle: '',
+    minSalary: '',
+    maxSalary: '',
+    jobDescription: '',
+    role: '',
     skills: [],
     jobRole: null,
     jobType: null,
@@ -114,36 +80,50 @@ const Jobapp = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
 
+    // Create a FormData object
     const formData = new FormData();
-    for (const key in input) {
-      if (Array.isArray(input[key])) {
-        input[key].forEach((item) => formData.append(key, item.value));
-      } else {
-        formData.append(key, input[key]?.value || input[key]);
-      }
-    }
 
-    // try {
-    //   const res = await axios.post(
-    //     `${USER_API_END_POINT}/register`,
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   if (res.data.success) {
-    //     navigate("/");
-    //     toast.success(res.data.message);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error.response.data.message);
-    // }
+    // Append each form input to FormData
+    formData.append('jobTitle', input.jobTitle);
+    formData.append('minSalary', input.minSalary);
+    formData.append('maxSalary', input.maxSalary);
+    formData.append('jobDescription', input.jobDescription);
+    formData.append('role', input.role);
+    formData.append('file', input.file);
+
+    // Append select inputs
+    input.skills.forEach((skill) => formData.append('skills', skill.value));
+    formData.append('jobRole', input.jobRole?.value);
+    formData.append('jobType', input.jobType?.value);
+    formData.append('experience', input.experience?.value);
+    formData.append('vacancies', input.vacancies?.value);
+    formData.append('jobLevel', input.jobLevel?.value);
+    formData.append('country', input.country?.value);
+    formData.append('city', input.city?.value);
+
+    try {
+      const token = localStorage.getItem('authToken'); // Or wherever your token is stored
+
+      const res = await axios.post(
+        `${APPLICATION_API_END_POINT}/create`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`, // Pass the token here
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        navigate('/joblisting');
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -174,7 +154,7 @@ const Jobapp = () => {
             options={options}
             value={input.skills}
             onChange={(selectedOption) =>
-              selectChangeHandler("skills", selectedOption)
+              selectChangeHandler('skills', selectedOption)
             }
             name="skills"
             isMulti={true}
@@ -188,7 +168,7 @@ const Jobapp = () => {
             value={input.jobRole}
             name="jobRole"
             onChange={(selectedOption) =>
-              selectChangeHandler("jobRole", selectedOption)
+              selectChangeHandler('jobRole', selectedOption)
             }
           />
         </div>
@@ -219,7 +199,7 @@ const Jobapp = () => {
             options={job_type}
             value={input.jobType}
             onChange={(selectedOption) =>
-              selectChangeHandler("jobType", selectedOption)
+              selectChangeHandler('jobType', selectedOption)
             }
           />
         </div>
@@ -230,7 +210,7 @@ const Jobapp = () => {
             value={input.experience}
             name="experience"
             onChange={(selectedOption) =>
-              selectChangeHandler("experience", selectedOption)
+              selectChangeHandler('experience', selectedOption)
             }
           />
         </div>
@@ -241,7 +221,7 @@ const Jobapp = () => {
             value={input.vacancies}
             name="vacancies"
             onChange={(selectedOption) =>
-              selectChangeHandler("vacancies", selectedOption)
+              selectChangeHandler('vacancies', selectedOption)
             }
           />
         </div>
@@ -252,7 +232,7 @@ const Jobapp = () => {
             options={job_level}
             value={input.jobLevel}
             onChange={(selectedOption) =>
-              selectChangeHandler("jobLevel", selectedOption)
+              selectChangeHandler('jobLevel', selectedOption)
             }
           />
         </div>
@@ -264,7 +244,7 @@ const Jobapp = () => {
             options={_country}
             value={input.country}
             onChange={(selectedOption) =>
-              selectChangeHandler("country", selectedOption)
+              selectChangeHandler('country', selectedOption)
             }
           />
           <h1 className="text-sm mt-3 font-bold">City</h1>
@@ -272,7 +252,7 @@ const Jobapp = () => {
             options={_city}
             value={input.city}
             onChange={(selectedOption) =>
-              selectChangeHandler("city", selectedOption)
+              selectChangeHandler('city', selectedOption)
             }
           />
         </div>
@@ -295,7 +275,7 @@ const Jobapp = () => {
                 type="radio"
                 name="role"
                 value="student"
-                checked={input.role === "student"}
+                checked={input.role === 'student'}
                 onChange={changeEventHandler}
                 className="cursor-pointer"
               />
@@ -306,7 +286,7 @@ const Jobapp = () => {
                 type="radio"
                 name="role"
                 value="recruiter"
-                checked={input.role === "recruiter"}
+                checked={input.role === 'recruiter'}
                 onChange={changeEventHandler}
                 className="cursor-pointer"
               />
