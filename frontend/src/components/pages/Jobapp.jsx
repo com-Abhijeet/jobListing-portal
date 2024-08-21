@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { RadioGroup } from '@/components/ui/radio-group';
-import { Button } from '../ui/button';
-import { useNavigate } from 'react-router-dom';
-import { APPLICATION_API_END_POINT } from '@/utils/constant';
-import { toast } from 'sonner';
-import axios from 'axios';
+import React, { useState } from "react";
+import Select from "react-select";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { RadioGroup } from "@/components/ui/radio-group";
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
+import { APPLICATION_API_END_POINT} from "@/utils/constant";
+import { toast } from "sonner";
+import axios from "axios";
 
 // Your predefined options
 const options = [
@@ -84,45 +84,24 @@ const Jobapp = () => {
     // Create a FormData object
     const formData = new FormData();
 
-    // Append each form input to FormData
-    formData.append('jobTitle', input.jobTitle);
-    formData.append('minSalary', input.minSalary);
-    formData.append('maxSalary', input.maxSalary);
-    formData.append('jobDescription', input.jobDescription);
-    formData.append('role', input.role);
-    formData.append('file', input.file);
-
-    // Append select inputs
-    input.skills.forEach((skill) => formData.append('skills', skill.value));
-    formData.append('jobRole', input.jobRole?.value);
-    formData.append('jobType', input.jobType?.value);
-    formData.append('experience', input.experience?.value);
-    formData.append('vacancies', input.vacancies?.value);
-    formData.append('jobLevel', input.jobLevel?.value);
-    formData.append('country', input.country?.value);
-    formData.append('city', input.city?.value);
-
     try {
-      const token = localStorage.getItem('authToken'); // Or wherever your token is stored
-
       const res = await axios.post(
         `${APPLICATION_API_END_POINT}/create`,
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`, // Pass the token here
+            "Content-Type": "multipart/form-data",
           },
           withCredentials: true,
         }
       );
       if (res.data.success) {
-        navigate('/joblisting');
+        navigate("/");
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error?.response?.data?.message || 'Something went wrong');
+      toast.error(error.response.data.message);
     }
   };
 

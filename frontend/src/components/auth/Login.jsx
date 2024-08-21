@@ -28,21 +28,16 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(
-        `http://localhost:3000/api/v1/user/login`,
-        input,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(`http://localhost:3000/api/v1/user/login`, input, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
       if (res.status === 200) {
-        console.log('User data:', res.data.user); // Log user data
-        dispatch(setUser(res.data.user)); // Set user in redux store
-        toast.success(res.data.message); // Show success message
-        navigate('/Profile'); // Redirect to profile after login
+        dispatch(setUser(res.data.user));
+        navigate('/');
+        toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
