@@ -15,21 +15,19 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const logoutHandler = async () => {
+  const logoutHandler = () => {
     try {
-      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
-        withCredentials: true,
-      });
-      if (res.data.success) {
-        dispatch(setUser(null));
-        navigate('/');
-        toast.success(res.data.message);
-      }
+      localStorage.removeItem('authToken'); // or sessionStorage.removeItem('authToken');
+      dispatch(setUser(null));
+      navigate('/');
+
+      toast.success('Successfully logged out');
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      console.error('Logout Error:', error);
+      toast.error('Logout failed. Please try again.');
     }
   };
+
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
