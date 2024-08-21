@@ -9,6 +9,8 @@ import axios from 'axios';
 import { USER_API_END_POINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
+import { isLoggedIn } from '@/utils/authUtils'; // Import the isLoggedIn function
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -17,7 +19,7 @@ const Navbar = () => {
 
   const logoutHandler = () => {
     try {
-      localStorage.removeItem('authToken'); // or sessionStorage.removeItem('authToken');
+      Cookies.remove('token'); // or sessionStorage.removeItem('authToken');
       dispatch(setUser(null));
       navigate('/');
 
@@ -62,7 +64,7 @@ const Navbar = () => {
             )}
           </ul>
 
-          {!user ? (
+          {!isLoggedIn() ? (
             // Show login and signup buttons if the user is not logged in
             <div className="flex items-center gap-2">
               <Link to="/login">
@@ -80,8 +82,8 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar className="cursor-pointer">
                   <AvatarImage
-                    src={user?.profile?.profilePhoto}
-                    alt={user?.fullname || '@user'}
+                    src={user?.profilePicture}
+                    alt={user?.fullName || '@user'}
                   />
                 </Avatar>
               </PopoverTrigger>
@@ -90,19 +92,19 @@ const Navbar = () => {
                   <div className="flex gap-2 space-y-2">
                     <Avatar className="cursor-pointer">
                       <AvatarImage
-                        src={user?.profile?.profilePhoto}
-                        alt={user?.fullname || '@user'}
+                        src={user?.profilePicture}
+                        alt={user?.fullName || '@user'}
                       />
                     </Avatar>
                     <div>
-                      <h4 className="font-medium">{user?.fullname}</h4>
+                      <h4 className="font-medium">{user?.fullName}</h4>
                       <p className="text-sm text-muted-foreground">
                         {user?.profile?.bio}
                       </p>
                     </div>
                   </div>
                   <div className="flex flex-col my-2 text-gray-600">
-                    {!user?.role === 'student' && (
+                    {!user?.role !== 'student' && (
                       <div className="flex w-fit items-center gap-2 cursor-pointer">
                         <User2 />
                         <Button variant="link">
