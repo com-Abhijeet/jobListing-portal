@@ -50,18 +50,14 @@ const UserSchema = new mongoose.Schema({
   resume: {
     type: String,
     required: false,
+    default : "user did not upload resume"
   },
   employmentStatus: {
     type: String,
     required: false,
     default: 'Unemployed',
   },
-  skills: [
-    {
-      skillName: String,
-      skillLevel: String,
-    },
-  ],
+  skills: [],
   experience: [
     {
       companyName: String,

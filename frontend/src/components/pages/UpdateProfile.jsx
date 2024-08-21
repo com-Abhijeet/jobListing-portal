@@ -1,26 +1,28 @@
 import React, { useState } from 'react'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
-import { Label } from './ui/label'
-import { Input } from './ui/input'
-import { Button } from './ui/button'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
+import { Label } from '../ui/label'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
 import { Loader2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/constant'
 import { setUser } from '@/redux/authSlice'
 import { toast } from 'sonner'
+import Cookies from 'js-cookie'
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
     const { user } = useSelector(store => store.auth);
+    const token = Cookies.get('token');
 
     const [input, setInput] = useState({
-        fullname: user?.fullname || "",
+        fullName: user?.fullName || "",
         email: user?.email || "",
-        phoneNumber: user?.phoneNumber || "",
+        contact: user?.contact || "",
         bio: user?.profile?.bio || "",
-        skills: user?.profile?.skills?.map(skill => skill) || "",
-        file: user?.profile?.resume || ""
+        skills: user?.skills?.map(skill => skill) || "",
+        file: user?.resume || ""
     });
     const dispatch = useDispatch();
 
@@ -34,25 +36,28 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
 
     const submitHandler = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); 
         const formData = new FormData();
-        formData.append("fullname", input.fullname);
+        formData.append("fullName", input.fullName);
         formData.append("email", input.email);
-        formData.append("phoneNumber", input.phoneNumber);
+        formData.append("contact", input.contact);
         formData.append("bio", input.bio);
         formData.append("skills", input.skills);
+        formData.append("userId", user._id);
+
         if (input.file) {
             formData.append("file", input.file);
         }
         try {
             setLoading(true);
-            const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {
+            const res = await axios.put(`${USER_API_END_POINT}/update`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
                 },
                 withCredentials: true
             });
-            if (res.data.success) {
+            if (res.status === 200) {
                 dispatch(setUser(res.data.user));
                 toast.success(res.data.message);
             }
@@ -83,7 +88,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     id="name"
                                     name="name"
                                     type="text"
-                                    value={input.fullname}
+                                    value={input.fullName}
                                     onChange={changeEventHandler}
                                     className="col-span-3"
                                 />
@@ -100,11 +105,11 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 />
                             </div>
                             <div className='grid grid-cols-4 items-center gap-4'>
-                                <Label htmlFor="number" className="text-right">Number</Label>
+                                <Label htmlFor="number" className="text-right">Contact No</Label>
                                 <Input
                                     id="number"
                                     name="number"
-                                    value={input.phoneNumber}
+                                    value={input.contact}
                                     onChange={changeEventHandler}
                                     className="col-span-3"
                                 />

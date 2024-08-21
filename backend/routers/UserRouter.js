@@ -17,6 +17,6 @@ UserRouter.post('/login', loginUser);
 UserRouter.post('/forgotPassword', forgotPassword);
 UserRouter.post('/resetPassword', resetPassword);
 UserRouter.get('/get',authenticateToken, getUserProfile);
-UserRouter.put('/update', upload.fields([{name : 'file'}, {name : 'resume'}]), updateUserProfile)
+UserRouter.put('/update', upload.single('file'), updateUserProfile)
 
 export default UserRouter;

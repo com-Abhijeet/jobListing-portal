@@ -9,10 +9,6 @@ const JobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tags : {
-        type: [String], 
-        required: true
-    },
     jobRole : {
         type: String,
         required : true

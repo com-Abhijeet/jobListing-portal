@@ -175,37 +175,44 @@ export const getUserProfile = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const user = await UserModel.findById(req.userId);
-    const { fullName, email, contact } = req.body;
+    const user = await UserModel.findById(req.body.userId);
+    const { fullName, email, contact, skills } = req.body;
+    console.log("req body full Name", fullName);
+    console.log("req body user id", req.body.userId );
 
-    if (req.files) {
-      const { profilePicture, resume } = req.files;
-
-      if (profilePicture) {
-        const { buffer: profileBuffer } = profilePicture[0];
-        const profileUploadUrl = await uploadToCloudinary(fullName, profileBuffer, 'Profile Avatar');
-        user.profilePicture = profileUploadUrl;
-      }
-
-      if (resume) {
-        const { buffer: resumeBuffer } = resume[0];
-        const resumeUploadUrl = await uploadToCloudinary(fullName, resumeBuffer, 'Resume');
-        user.resume = resumeUploadUrl;
-      }
+    if(!user){
+      return res.status(404).json({
+        message: 'User not found - ID ERROR',
+      });
     }
+
+    if (!req.file) {
+      console.log('File not found');
+      return res.status(400).json({
+        message: 'Upload  file is required',
+      });
+    }
+
+    const { buffer, mimetype } = req.file;
+    const documentBuffer = buffer;
+    const uploadUrl = await uploadToCloudinary(fullName, documentBuffer, 'Resume');
 
     user.fullName = fullName;
     user.email = email;
     user.contact = contact;
+    user.skills = Array.isArray(skills) ? skills : skills.split(',').map(skill => skill.trim());
+    user.resume = uploadUrl;
 
     await user.save();
     res.status(200).json({
       message: 'Profile updated successfully',
+      user
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: 'Internal Server Error',
+      error
     });
   }
 };
