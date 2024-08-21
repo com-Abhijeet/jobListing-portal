@@ -39,6 +39,7 @@ const Navbar = () => {
 
   const handleClick = () => setClick(!click);
 
+
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_END_POINT}/logout`, {

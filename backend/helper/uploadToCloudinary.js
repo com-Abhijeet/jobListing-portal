@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config();
 
-export const uploadResume = async (fullName, fileBuffer, type) => {
+export const uploadToCloudinary = async (fullName, fileBuffer, type) => {
     const publicId = `${fullName}_${type}`;
     
     // Configuration

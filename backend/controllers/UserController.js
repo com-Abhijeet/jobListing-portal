@@ -2,12 +2,12 @@ import UserModel from '../models/UserModel.js';
 import bcrypt from 'bcrypt';
 import { createToken } from '../helper/createToken.js';
 import { sendOTPEmail } from '../Mailer/sendOtpEmail.js';
-import { uploadResume } from '../helper/uploadResume.js';
+import { uploadToCloudinary } from '../helper/uploadToCloudinary.js';
 import { sendRegisterSuccessMail } from '../Mailer/sendRegisterSuccessMail.js';
 
 export const registerUser = async (req, res) => {
   try {
-    const { fullName, email, password, phoneNumber, role } = req.body;
+    const { fullName, email, password, contact, role } = req.body;
 
     console.log('Request body', req.body);
 
@@ -25,21 +25,21 @@ export const registerUser = async (req, res) => {
     if (!req.file) {
       console.log('File not found');
       return res.status(400).json({
-        message: 'Resume file is required',
+        message: 'Upload  file is required',
       });
     }
 
     const { buffer, mimetype } = req.file;
-    const resumeBuffer = buffer;
-    const resumeUrl = await uploadResume(fullName, resumeBuffer, 'resume');
+    const documentBuffer = buffer;
+    const uploadUrl = await uploadToCloudinary(fullName, documentBuffer, 'Profile Avatar');
 
     const user = new UserModel({
       fullName : fullName,
       email,
       password: hashedPassword,
-      contact : phoneNumber,
+      contact , // updated here   
       role,
-      resume: resumeUrl,
+      profilePicture : uploadUrl,
     });
 
     console.log('Updated User', user);
@@ -158,3 +158,56 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId);
+    res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId);
+    const { fullName, email, contact } = req.body;
+
+    if (req.files) {
+      const { profilePicture, resume } = req.files;
+
+      if (profilePicture) {
+        const { buffer: profileBuffer } = profilePicture[0];
+        const profileUploadUrl = await uploadToCloudinary(fullName, profileBuffer, 'Profile Avatar');
+        user.profilePicture = profileUploadUrl;
+      }
+
+      if (resume) {
+        const { buffer: resumeBuffer } = resume[0];
+        const resumeUploadUrl = await uploadToCloudinary(fullName, resumeBuffer, 'Resume');
+        user.resume = resumeUploadUrl;
+      }
+    }
+
+    user.fullName = fullName;
+    user.email = email;
+    user.contact = contact;
+
+    await user.save();
+    res.status(200).json({
+      message: 'Profile updated successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+
