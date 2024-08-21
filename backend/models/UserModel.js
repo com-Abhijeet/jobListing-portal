@@ -1,95 +1,107 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { mongo } from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-    fullName: {
-        type: String,
-        required: true
+  fullName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  contact: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: false,
+  },
+  dateOfBirth: {
+    type: Date,
+    required: false,
+  },
+  gender: {
+    type: String,
+    required: false,
+  },
+  education: [
+    {
+      institutionName: String,
+      startDate: Date,
+      endDate: Date,
+      major: String,
+      cgpa: Number,
     },
-    email: {
-        type: String,
-        required: true
+  ],
+  role: {
+    type: String,
+    required: true,
+    default: 'Applicant',
+  },
+  profilePicture: {
+    type: String,
+    required: false,
+  },
+  resume: {
+    type: String,
+    required: false,
+  },
+  employmentStatus: {
+    type: String,
+    required: false,
+    default: 'Unemployed',
+  },
+  skills: [
+    {
+      skillName: String,
+      skillLevel: String,
     },
-    password: {
-        type: String,
-        required: true
+  ],
+  experience: [
+    {
+      companyName: String,
+      jobTitle: String,
+      startDate: Date,
+      endDate: Date,
+      jobDescription: String,
     },
-    contact:{
-        type: String,
-        required: true
+  ],
+  jobApplications: [
+    {
+      jobID: String,
+      status: String,
     },
-    address:{
-        type: String,
-        required: false
+  ],
+  jobOffers: [
+    {
+      jobID: String,
+      status: String,
     },
-    dateOfBirth:{
-        type: Date,
-        required: false
+  ],
+  jobPosts: [
+    {
+      jobID: String,
     },
-    gender:{
-        type: String,
-        required : false
+  ],
+  jobPostsSaved: [
+    {
+      jobID: String,
     },
-    education: [{
-        institutionName: String,
-        startDate: Date,
-        endDate: Date,
-        major: String,
-        cgpa: Number,
-    }],
-    role: {
-        type: String,
-        required: true,
-        default: "Applicant"
-    },
-    profilePicture : {
-        type: String,
-        required: false
-    },
-    resume: {
-        type: String,
-        required : false
-    },
-    employmentStatus : {
-        type: String,
-        required: false,
-        default: "Unemployed"
-    },
-    skills: [{
-        skillName: String,
-        skillLevel: String
-    }],
-    experience: [{
-        companyName: String,
-        jobTitle: String,
-        startDate: Date,
-        endDate: Date,
-        jobDescription: String
-    }],
-    jobApplications: [{
-        jobID: String,
-        status: String
-    }],
-    jobOffers: [{
-        jobID: String,
-        status: String
-    }],
-    jobPosts: [{
-        jobID: String
-    }],
-    jobPostsSaved: [{
-        jobID: String
-    }],
-    Otp :{
-        type: String,
-        required: false
-    },
-    OtpExpiry : {
-        type: Date,
-        required: false
-    }
-
-
+  ],
+  Otp: {
+    type: String,
+    required: false,
+  },
+  OtpExpiry: {
+    type: Date,
+    required: false,
+  },
 });
 
-const UserModel = mongoose.model("User", UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 export default UserModel;
