@@ -13,9 +13,9 @@ import { setLoading } from '@/redux/authSlice';
 
 const Signup = () => {
   const [input, setInput] = useState({
-    fullname: '',
+    fullName: '',
     email: '',
-    phoneNumber: '',
+    contact: '', // Fixed name here
     password: '',
     role: '',
     file: '',
@@ -35,9 +35,9 @@ const Signup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('fullname', input.fullname);
+    formData.append('fullName', input.fullName);
     formData.append('email', input.email);
-    formData.append('phoneNumber', input.phoneNumber);
+    formData.append('contact', input.contact); // Fixed key name here
     formData.append('password', input.password);
     formData.append('role', input.role);
     if (input.file) {
@@ -51,13 +51,19 @@ const Signup = () => {
           withCredentials: true,
         },
       });
-      if (res.data.success) {
-        navigate('/login');
+
+      // Check for all successful status codes
+      if (res.status === 200 || res.status === 201) {
         toast.success(res.data.message);
+        navigate('/login'); // Moved after success toast
+      } else {
+        toast.error('Unexpected response from server');
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || 'Something went wrong!');
+    } finally {
+      dispatch(setLoading(false)); // Ensure loading is set to false after the request
     }
   };
 
@@ -65,114 +71,110 @@ const Signup = () => {
     if (user) {
       navigate('/');
     }
-  }, []);
+  }, [user]); // Added user as a dependency
 
   return (
-    <>
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form
-          onSubmit={submitHandler}
-          className="w-1/2 border border-[#8d8296] shadow-2xl shadow-[#986dc0] rounded-md p-4 my-10"
-        >
-          <h1 className="font-bold text-xl mb-5">Sign Up</h1>
-          <div className="my-2">
-            <Label>Full Name</Label>
-            <Input
-              type="text"
-              placeholder="Sam Jose"
-              value={input.fullname}
-              name="fullname"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="my-2">
-            <Label>Email</Label>
-            <Input
-              type="email"
-              placeholder="sam@gmail.com"
-              value={input.email}
-              name="email"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="my-2">
-            <Label>Phone Number</Label>
-            <Input
-              type="number"
-              placeholder="5674835680"
-              value={input.phoneNumber}
-              name="phoneNumber"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="my-2">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="*******"
-              value={input.password}
-              name="password"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-4 my-5">
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={input.role === 'student'}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r1">Student</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="recruiter"
-                  checked={input.role === 'recruiter'}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r2">Recruiter</Label>
-              </div>
-            </RadioGroup>
-            <div className="flex items-center gap-2">
-              <Label>Profile</Label>
+    <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <form
+        onSubmit={submitHandler}
+        className="w-1/2 border border-[#8d8296] shadow-2xl shadow-[#986dc0] rounded-md p-4 my-10"
+      >
+        <h1 className="font-bold text-xl mb-5">Sign Up</h1>
+        <div className="my-2">
+          <Label>Full Name</Label>
+          <Input
+            type="text"
+            placeholder="Sam Jose"
+            value={input.fullName}
+            name="fullName"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="my-2">
+          <Label>Email</Label>
+          <Input
+            type="email"
+            placeholder="sam@gmail.com"
+            value={input.email}
+            name="email"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="my-2">
+          <Label>Phone Number</Label>
+          <Input
+            type="number"
+            placeholder="5674835680"
+            value={input.contact} // Corrected value binding here
+            name="contact"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="my-2">
+          <Label>Password</Label>
+          <Input
+            type="password"
+            placeholder="*******"
+            value={input.password}
+            name="password"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <RadioGroup className="flex items-center gap-4 my-5">
+            <div className="flex items-center space-x-2">
               <Input
-                accept="image/*"
-                type="file"
+                type="radio"
+                name="role"
+                value="student"
+                checked={input.role === 'student'}
+                onChange={changeEventHandler}
                 className="cursor-pointer"
-                onChange={changeFileHandler}
               />
+              <Label htmlFor="r1">Student</Label>
             </div>
+            <div className="flex items-center space-x-2">
+              <Input
+                type="radio"
+                name="role"
+                value="recruiter"
+                checked={input.role === 'recruiter'}
+                onChange={changeEventHandler}
+                className="cursor-pointer"
+              />
+              <Label htmlFor="r2">Recruiter</Label>
+            </div>
+          </RadioGroup>
+          <div className="flex items-center gap-2">
+            <Label>Profile</Label>
+            <Input
+              accept="image/*"
+              type="file"
+              className="cursor-pointer"
+              onChange={changeFileHandler}
+            />
           </div>
-          {loading ? (
-            <Button className="w-full my-4">
-              {' '}
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{' '}
-            </Button>
-          ) : (
-            <Button
-              className="text-lg w-full my-4 bg-[#6300b3] hover:border-2 hover:border-[#6300b3] hover:bg-transparent hover:text-[#6300b3]"
-              type="submit"
-            >
-              Sign Up
-            </Button>
-          )}
-
-          <span>
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 font-semibold">
-              Login
-            </Link>
-          </span>
-        </form>
-      </div>
-    </>
+        </div>
+        {loading ? (
+          <Button className="w-full my-4">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+          </Button>
+        ) : (
+          <Button
+            className="text-lg w-full my-4 bg-[#6300b3] hover:border-2 hover:border-[#6300b3] hover:bg-transparent hover:text-[#6300b3]"
+            type="submit"
+          >
+            Sign Up
+          </Button>
+        )}
+        <span>
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 font-semibold">
+            Login
+          </Link>
+        </span>
+      </form>
+    </div>
   );
 };
 
