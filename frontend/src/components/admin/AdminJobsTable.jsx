@@ -39,8 +39,8 @@ const AdminJobsTable = () => {
                     {
                         filterJobs?.map((job) => (
                             <tr>
-                                <TableCell>{job?.company?.name}</TableCell>
-                                <TableCell>{job?.title}</TableCell>
+                                <TableCell>{job?.companyId?.companyName}</TableCell>
+                                <TableCell>{job?.jobTitle}</TableCell>
                                 <TableCell>{job?.createdAt.split("T")[0]}</TableCell>
                                 <TableCell className="text-right cursor-pointer">
                                     <Popover>
@@ -50,7 +50,7 @@ const AdminJobsTable = () => {
                                                 <Edit2 className='w-4' />
                                                 <span>Edit</span>
                                             </div>
-                                            <div onClick={()=> navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center w-fit gap-2 cursor-pointer mt-2'>
+                                            <div onClick={()=> navigate(`/admin/jobs/applicants/${job._id}`)} className='flex items-center w-fit gap-2 cursor-pointer mt-2'>
                                                 <Eye className='w-4'/>
                                                 <span>Applicants</span>
                                             </div>

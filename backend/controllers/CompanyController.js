@@ -1,33 +1,22 @@
 import CompanyModel from "../models/CompanyModel.js";
 import bcrypt from 'bcrypt';
-import { sendRegisterSuccessMail } from "../Mailer/sendRegisterSuccessMail.js";
 import { createToken } from "../helper/createToken.js";
+import { uploadToCloudinary } from "../helper/uploadToCloudinary.js";
 
 export const createCompany = async(req , res) =>{
     try{
         const {
             companyName,
-            email,
-            password,
-            contact
         } = req.body
-
-        
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hashedPassword = await bcrypt.hash(password, salt);
 
         const newCompany = new CompanyModel({
             companyName,
-            email,
-            password : hashedPassword,
-            contact,
         });
 
         const company = await newCompany.save();
         console.log("Company Created Successfully");
-        sendRegisterSuccessMail({ recipient_email : email ,companyName});
-        res.status(201).json({
+
+        res.status(200).json({
             message: "Company Created Successfully",
             company
         });
@@ -81,19 +70,14 @@ export const updateCompany = async (req, res) => {
         const { id } = req.params;
         const {
             companyName,
-            email,
-            contact,
-            address,
-            companyType,
-            companySize,
-            companyDescription,
-            companyWebsite,
-            companyIndustry,
-            companyJobs,
-            companyRecruiters
+            description,
+            website,
+            location,
+            createdBy
         } = req.body;
 
-        console.log(id);
+        const createdAt = new Date();
+        console.log(createdAt);
 
         const isCompany = await CompanyModel.findById(id);
 
@@ -102,21 +86,20 @@ export const updateCompany = async (req, res) => {
                 message: "Company not found"
             });
         }
+        const { buffer, mimetype } = req.file;
+        const documentBuffer = buffer;
+        const logoUrl = await uploadToCloudinary(companyName, documentBuffer, 'Logo');
 
         const company = await CompanyModel.findByIdAndUpdate(
             id,
             {
                 companyName,
-                email,
-                contact,
-                address,
-                companyType,
-                companySize,
-                companyDescription,
-                companyWebsite,
-                companyIndustry,
-                companyJobs,
-                companyRecruiters
+                description,
+                website,
+                location,
+                logo : logoUrl,
+                createdBy,
+                createdAt
             },
             { new: true }
         );

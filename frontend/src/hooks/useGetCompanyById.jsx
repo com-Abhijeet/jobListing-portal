@@ -4,15 +4,21 @@ import { COMPANY_API_END_POINT, JOB_API_END_POINT } from '@/utils/constant'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
 
 const useGetCompanyById = (companyId) => {
+    const token = Cookies.get('token');
     const dispatch = useDispatch();
     useEffect(()=>{
         const fetchSingleCompany = async () => {
             try {
-                const res = await axios.get(`${COMPANY_API_END_POINT}/get/${companyId}`,{withCredentials:true});
+                const res = await axios.get(`${COMPANY_API_END_POINT}/get/${companyId}`,{withCredentials:true , 
+                    headers : {
+                        'Authorization' : `Bearer ${token}`
+                    }
+                });
                 console.log(res.data.company);
-                if(res.data.success){
+                if(res.status === 200){
                     dispatch(setSingleCompany(res.data.company));
                 }
             } catch (error) {

@@ -1,62 +1,51 @@
 import mongoose from "mongoose";
 
 const JobSchema = new mongoose.Schema({
+    
     jobTitle: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
-    jobRole : {
-        type: String,
-        required : true
-    },
-    minSalary: {
+    salary : {
         type: Number,
-        required: true
-    },
-    maxSalary : {
-        type: Number,
-        required : true
+        required : false
     },
     vacancies : {
         type: Number,
-        required : true
+        required : false
     },
-    jobLevel : {
+    location: {
         type: String,
-        required : true
+        required: false
     },
-    locationCountry: {
+    employmentType: { //jobType
         type: String,
-        required: true
-    },
-    locationCity: {
-        type: String,
-        required: true
-    },
-    employmentType: {
-        type: String,
-        required: true
+        required: false
     },
     experience: {
         type: String,
-        required: true
+        required: false
     },
     skills: [{
-        skillName: String,
-        skillLevel: String
+        type: String,
+        required: false
     }],
-    postedBy: {
+    createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'UserModel',
-        required: true
+        ref: 'User',
+        required: false
     },
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    companyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company',
     },
     applicants : {
         type: [mongoose.Schema.Types.ObjectId],

@@ -9,46 +9,55 @@ import axios from 'axios'
 import { JOB_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
-import { Loader2 } from 'lucide-react'
+import { Key, Loader2 } from 'lucide-react'
+import Cookies from 'js-cookie'
 
-const companyArray = [];
+    const companyArray = [];
 
 const PostJob = () => {
+    const { user } = useSelector((store) => store.auth);
     const [input, setInput] = useState({
-        title: "",
+        jobTitle: "",
         description: "",
-        requirements: "",
+        skills: "",
         salary: "",
         location: "",
         jobType: "",
         experience: "",
         position: 0,
-        companyId: ""
+        companyId: "",
+        By: user._id
     });
     const [loading, setLoading]= useState(false);
     const navigate = useNavigate();
 
     const { companies } = useSelector(store => store.company);
+    console.log("Companies in store" ,companies);
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
     const selectChangeHandler = (value) => {
-        const selectedCompany = companies.find((company)=> company.name.toLowerCase() === value);
-        setInput({...input, companyId:selectedCompany._id});
+        const selectedCompany = companies.find((company) => company.companyName && company.companyName.toLowerCase() === value.toLowerCase());
+        if (selectedCompany) {
+            setInput({ ...input, companyId: selectedCompany._id });
+        } else {
+            console.error("Selected company not found");
+        }
     };
 
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, input,{
+            const res = await axios.post(`${JOB_API_END_POINT}/create`, input,{
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${Cookies.get('token')}`
                 },
                 withCredentials:true
             });
-            if(res.data.success){
+            if(res.status === 200){
                 toast.success(res.data.message);
                 navigate("/admin/jobs");
             }
@@ -61,7 +70,6 @@ const PostJob = () => {
 
     return (
         <div>
-            <Navbar />
             <div className='flex items-center justify-center w-screen my-5'>
                 <form onSubmit = {submitHandler} className='p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md'>
                     <div className='grid grid-cols-2 gap-2'>
@@ -69,8 +77,8 @@ const PostJob = () => {
                             <Label>Title</Label>
                             <Input
                                 type="text"
-                                name="title"
-                                value={input.title}
+                                name="jobTitle"
+                                value={input.jobTitle}
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
                             />
@@ -86,11 +94,11 @@ const PostJob = () => {
                             />
                         </div>
                         <div>
-                            <Label>Requirements</Label>
+                            <Label>skills</Label>
                             <Input
                                 type="text"
-                                name="requirements"
-                                value={input.requirements}
+                                name="skills"
+                                value={input.skills}
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
                             />
@@ -154,9 +162,10 @@ const PostJob = () => {
                                     <SelectContent>
                                         <SelectGroup>
                                             {
-                                                companies.map((company) => {
+                                                companies.map((company)=> {
+                                                    console.log("Select option for companies",company);
                                                     return (
-                                                        <SelectItem value={company?.name?.toLowerCase()}>{company.name}</SelectItem>
+                                                        <SelectItem value={company?.companyName}>{company.companyName}</SelectItem>
                                                     )
                                                 })
                                             }

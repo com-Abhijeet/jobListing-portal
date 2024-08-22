@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import CompaniesTable from './CompaniesTable';
 import { useNavigate } from 'react-router-dom';
+import useGetAllCompanies from '@/hooks/useGetAllCompanies';
+import { setSearchCompanyByText } from '@/redux/companySlice';
+import { useDispatch } from 'react-redux';
 
 const Companies = () => {
   useGetAllCompanies();
   const [input,setInput] = useState("")
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     dispatch(setSearchCompanyByText(input));

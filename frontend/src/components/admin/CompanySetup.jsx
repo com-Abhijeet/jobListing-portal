@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Button } from '../ui/button'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft, Loader2, User } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import axios from 'axios'
@@ -10,10 +10,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import useGetCompanyById from '@/hooks/useGetCompanyById'
+import Cookies from 'js-cookie'
 
 const CompanySetup = () => {
+    const { user } = useSelector((store) => store.auth);
     const params = useParams();
     useGetCompanyById(params.id);
+    const token = Cookies.get("token");
     const [input, setInput] = useState({
         name: "",
         description: "",
@@ -41,6 +44,7 @@ const CompanySetup = () => {
         formData.append("description", input.description);
         formData.append("website", input.website);
         formData.append("location", input.location);
+        formData.append("createdBy", user._id);
         if (input.file) {
             formData.append("file", input.file);
         }
@@ -48,11 +52,11 @@ const CompanySetup = () => {
             setLoading(true);
             const res = await axios.put(`${COMPANY_API_END_POINT}/update/${params.id}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Authorization' : `Bearer ${token}`
                 },
                 withCredentials: true
             });
-            if (res.data.success) {
+            if (res.status === 200) {
                 toast.success(res.data.message);
                 navigate("/admin/companies");
             }
@@ -76,7 +80,6 @@ const CompanySetup = () => {
 
     return (
         <div>
-            <Navbar />
             <div className='max-w-xl mx-auto my-10'>
                 <form onSubmit={submitHandler}>
                     <div className='flex items-center gap-5 p-8'>

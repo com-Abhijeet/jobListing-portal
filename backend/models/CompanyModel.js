@@ -5,54 +5,18 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    contact:{
-        type: String,
-        required: true
-    },
-    address:{
-        type: String,
-        required: false
-    },
-    companyType:{
-        type: String,
-        required: false
-    },
-    companySize:{
-        type: Number,
-        required: false
-    },
-    companyLogo : {
-        type: String,
-        required: false
-    },
-    companyDescription: {
-        type: String,
-        required: false
-    },
-    companyWebsite: {
-        type: String,
-        required: false
-    },
-    companyIndustry: {
-        type: String,
-        required: false
-    },
-    companyJobs: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'JobModel'
-    }],
-    companyRecruiters : [{
+    description : String,
+    website : String,
+    location : String,
+    logo : String,
+    createdBy : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
-    }]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 const CompanyModel = mongoose.model('Company', CompanySchema);

@@ -5,12 +5,18 @@ import { Avatar, AvatarImage } from '../ui/avatar';
 import { LogOut, User2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { USER_API_END_POINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
 import { isLoggedIn } from '@/utils/authUtils'; // Import the isLoggedIn function
 import Cookies from 'js-cookie';
+import { TiArrowSortedDown } from 'react-icons/ti';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -35,34 +41,66 @@ const Navbar = () => {
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div>
           <h1 className="text-2xl font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
+            Always<span className="text-[#862ec0]">Apply</span>
           </h1>
         </div>
         <div className="flex items-center gap-12">
-          <ul className="flex font-medium items-center gap-5">
+          <div className="flex font-medium items-center gap-5">
             {user && user.role === 'recruiter' ? (
               <>
-                <li>
+                <div>
                   <Link to="/admin/companies">Companies</Link>
-                </li>
-                <li>
-                  <Link to="/admin/jobs">Jobs</Link>
-                </li>
+                </div>
+                <div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex align-center gap-1">
+                      Job <TiArrowSortedDown />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <Link to="/admin/jobs">Jobs</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link to="/jobsearch">Job Search</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link to="joblisting">Job Lisitng</Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </>
             ) : (
               <>
-                <li>
+                <div>
                   <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/joblisting">Jobs</Link>
-                </li>
-                <li>
+                </div>
+                <div>
+                  <div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex align-center gap-1">
+                        Job <TiArrowSortedDown className="mt-1" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <Link to="/jobsearch">Job Search</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <Link to="joblisting">Job Lisitng</Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+                <div>
                   <Link to="/browse">Browse</Link>
-                </li>
+                </div>
               </>
             )}
-          </ul>
+          </div>
 
           {!isLoggedIn() ? (
             // Show login and signup buttons if the user is not logged in
@@ -80,7 +118,7 @@ const Navbar = () => {
             // Show profile popover if the user is logged in
             <Popover>
               <PopoverTrigger asChild>
-                <Avatar className="cursor-pointer">
+                <Avatar className="cursor-pointer bg-slate-200">
                   <AvatarImage
                     src={user?.profilePicture}
                     alt={user?.fullName || '@user'}
@@ -89,21 +127,24 @@ const Navbar = () => {
               </PopoverTrigger>
               <PopoverContent className="w-80">
                 <div>
-                  <div className="flex gap-2 space-y-2">
-                    <Avatar className="cursor-pointer">
+                  <div className="flex gap-2 space-y-2 text-gray-800 rounded-full">
+                    <Avatar className="cursor-pointer bg-slate-200">
                       <AvatarImage
                         src={user?.profilePicture}
                         alt={user?.fullName || '@user'}
+                        className="text-gray-400 rounded-full "
                       />
                     </Avatar>
-                    <div>
-                      <h4 className="font-medium">{user?.fullName}</h4>
-                      <p className="text-sm text-muted-foreground">
+                    <div className="text-gray-800">
+                      <h4 className="font-medium text-gray-400">
+                        {user?.fullName}
+                      </h4>
+                      <p className="text-sm text-gray-400">
                         {user?.profile?.bio}
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col my-2 text-gray-600">
+                  <div className="flex flex-col my-2 text-gray-800">
                     {!user?.role !== 'student' && (
                       <div className="flex w-fit items-center gap-2 cursor-pointer">
                         <User2 />

@@ -1,51 +1,44 @@
 import JobModel from "../models/JobModel.js";
-import ApplicationModel from "../models/ApplicationModel.js";
+import CompanyModel from "../models/CompanyModel.js";
 
 export const createJob = async(req , res) =>{
     try{
         const {
             jobTitle,
             description,
-            tags,
-            jobRole,
-            minSalary,
-            maxSalary,
-            vacancies,
-            jobLevel,
-            locationCountry,
-            locationCity,
-            employmentType,
-            experience,
             skills,
-            postedBy
+            salary,
+            location,
+            jobType,
+            experience,
+            position,
+            companyId,
+            createdBy
         } = req.body
 
         const newJob = new JobModel({
             jobTitle,
             description,
-            tags,
-            jobRole,
-            minSalary,
-            maxSalary,
-            vacancies,
-            jobLevel,
-            locationCountry,
-            locationCity,
-            employmentType,
-            experience,
             skills,
-            postedBy
+            salary,
+            location,
+            jobType,
+            experience,
+            vacancies : position,
+            companyId,
+            createdBy
+
         });
 
         const job = await newJob.save();
-        console.log("Job Created Successfully");
-        res.status(201).json({
+        console.log("Job Created Successfully" , job);
+        res.status(200).json({
             message: "Job Created Successfully",
             job
         });
 
     }catch(error){
-        console.log("ERROR IN CREATING JOB _-_-_-_", error);
+        console.log("ERROR IN CREATING JOB * * * * * * * * *", error);
         res.status(500).json({
             message: "Internal server error" , error
         });
@@ -59,8 +52,7 @@ export const updateJob = async(req , res) => {
             description,
             tags,
             jobRole,
-            minSalary,
-            maxSalary,
+            salary,
             vacancies,
             jobLevel,
             locationCountry,
@@ -75,8 +67,7 @@ export const updateJob = async(req , res) => {
             description,
             tags,
             jobRole,
-            minSalary,
-            maxSalary,
+            salary,
             vacancies,
             jobLevel,
             locationCountry,
@@ -93,7 +84,7 @@ export const updateJob = async(req , res) => {
         });
 
     }catch(error){
-        console.log("ERROR IN UPDATING JOB _-_-_-_", error);
+        console.log("ERROR IN UPDATING JOB * * * * * * * * *", error);
         res.status(500).json({
             message: "Internal server error" , error
         });
@@ -110,7 +101,7 @@ export const deleteJob = async(req , res) => {
         });
 
     }catch(error){
-        console.log("ERROR IN DELETING JOB _-_-_-_", error);
+        console.log("ERROR IN DELETING JOB * * * * * * * * *", error);
         res.status(500).json({
             message: "Internal server error" , error
         });
@@ -128,7 +119,7 @@ export const getJob = async(req , res) => {
         });
 
     }catch(error){
-        console.log("ERROR IN GETTING JOB _-_-_-_", error);
+        console.log("ERROR IN GETTING JOB * * * * * * * * *", error);
         res.status(500).json({
             message: "Internal server error" , error
         });
@@ -137,69 +128,38 @@ export const getJob = async(req , res) => {
 
 export const getAllJobs = async(req , res) => {
     try{
-        const jobs = await JobModel.find();
-        console.log("All Jobs Found Successfully");
+        const jobs = await JobModel.find()
+                                    .populate('companyId');;
+        console.log("All Jobs Found Successfully", jobs) 
+                            
         res.status(200).json({
             message: "All Jobs Found Successfully",
             jobs
         });
 
     }catch(error){
-        console.log("ERROR IN GETTING ALL JOBS _-_-_-_", error);
+        console.log("ERROR IN GETTING ALL JOBS * * * * * * * * *", error);
         res.status(500).json({
             message: "Internal server error" , error
         });
-    }
-};
+    };
+}
 
-export const getJobsByTags = async(req,res) => {
+export const getAdminJobs = async(req , res) => {
     try{
-        const jobs = await JobModel.find({tags: req.params.tags});
-        console.log("Jobs Found Successfully");
+        const jobs = await JobModel.find({postedBy: req.user._id})
+                                   .populate('companyId')
+                                   .select('jobTitle description salary vacancies location experience skills createdBy companyId applicants status createdAt');
+        console.log("JOBS FOR ADMIN * * ** * * ** ", jobs);
         res.status(200).json({
-            message: "Jobs Found Successfully",
+            message: "Admin Jobs Found Successfully",
             jobs
         });
 
     }catch(error){
-        console.log("ERROR IN GETTING JOBS BY TAGS _-_-_-_", error);
+        console.log("ERROR IN GETTING ADMIN JOBS * * * * * * * * *", error);
         res.status(500).json({
             message: "Internal server error" , error
         });
     }
 }
-
-export const getJobsByRole = async(req,res) => {
-    try{
-        const jobs = await JobModel.find({jobRole: req.params.role});
-        console.log("Jobs Found Successfully");
-        res.status(200).json({
-            message: "Jobs Found Successfully",
-            jobs
-        });
-
-    }catch(error){
-        console.log("ERROR IN GETTING JOBS BY ROLE _-_-_-_", error);
-        res.status(500).json({
-            message: "Internal server error" , error
-        });
-    }
-}
-
-export const getJobsBySearch = async(req,res) =>{
-    try{
-        const jobs = await JobModel.find({$text: {$search: req.params.search}});
-        console.log("Jobs Found Successfully");
-        res.status(200).json({
-            message: "Jobs Found Successfully",
-            jobs
-        });
-
-    }catch(error){
-        console.log("ERROR IN GETTING JOBS BY SEARCH _-_-_-_", error);
-        res.status(500).json({
-            message: "Internal server error" , error
-        });
-    }
-}
-

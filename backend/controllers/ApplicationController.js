@@ -45,9 +45,14 @@ export const applyJob = async (req, res) => {
 };
 export const getApplicationsByJobId = async(req , res) =>{
     try{
-        const jobId = req.body;
+        const { id } = req.params;
+        console.log(id);
 
-        const applications = await ApplicationModel.find({job : jobId});
+        const applications = await ApplicationModel.find({ job: id })
+            .populate('applicant', 'fullName email contact resume') // Populate applicant with name and email
+            .populate('job', 'jobTitle description'); // Populate job with title and description
+
+        console.log("Application * * ** * ** * * *", applications)
         res.status(200).json({
             message: "Applications fetched successfully",
             applications
@@ -55,16 +60,19 @@ export const getApplicationsByJobId = async(req , res) =>{
     }catch(error){
         console.log("ERROR IN FETCHING APPLICATIONS _-_-_-_", error);
         res.status(500).json({
-            message: "Internal server error" , error
+            message: "Internal server error",
+            error
         });
     }
 }
 
 export const getApplicationsByUserId = async(req , res) =>{
     try{
-        const userId = req.body;
+        const { userId } = req.params;
 
-        const applications = await ApplicationModel.find({user : userId});
+        const applications = await ApplicationModel.find({ applicant: userId })
+            .populate('job', 'title description'); // Populate job with title and description
+
         res.status(200).json({
             message: "Applications fetched successfully",
             applications
@@ -72,18 +80,23 @@ export const getApplicationsByUserId = async(req , res) =>{
     }catch(error){
         console.log("ERROR IN FETCHING APPLICATIONS _-_-_-_", error);
         res.status(500).json({
-            message: "Internal server error" , error
+            message: "Internal server error",
+            error
         });
     }
 }
 
+
 export const updateApplicationStatus = async(req , res) =>{
     try{
-        const {applicationId , status} = req.body;
+        const {id } = req.params;
+        const {status} = req.body;
 
-        const application = await ApplicationModel.findById({applicationId});
+        const application = await ApplicationModel.findById(id);
         application.status = status;
         await application.save();
+
+        console.log('Application status set' , status)
         res.status(200).json({
             message: "Application updated successfully",
             application

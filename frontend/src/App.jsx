@@ -20,6 +20,9 @@ import CompanySetup from './components/admin/CompanySetup';
 import Jobapp from './components/pages/Jobapp';
 import { createContext, useState } from 'react';
 import JobDescription from './components/pages/JobDescription';
+import AdminJobs from './components/admin/AdminJobs';
+import PostJob from './components/admin/PostJob';
+import Applicants from './components/admin/Applicants';
 
 export const RecoveryContext = createContext();
 function App() {
@@ -60,9 +63,13 @@ function App() {
                 element={<CreateCompany />}
               />
               <Route path="/admin/companies/:id" element={<CompanySetup />} />
+
               <Route path="/joblisting" element={<Jobs />} />
               <Route path="/jobapp" element={<Jobapp />} />
               <Route path="/description/:id" element={<JobDescription />} />
+              <Route path="/admin/jobs" element={<AdminJobs/>} />
+              <Route path="/admin/jobs/create" element={<PostJob/>} />
+              <Route path="/admin/jobs/applicants/:id" element={<Applicants/>} />
             </Routes>
             <Footer />
           </div>
