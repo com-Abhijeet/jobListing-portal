@@ -52,7 +52,7 @@ export const registerUser = async (req, res) => {
     console.log('User Registered Successfully');
     sendRegisterSuccessMail({ recipient_email: email, fullName });
   } catch (error) {
-    console.errorx('Error in registering User:', error);
+    console.error('Error in registering User:', error);
     res.status(500).json(error);
   }
 };

@@ -1,7 +1,7 @@
 import { connect } from 'mongoose';
 
 const Database=()=>{
-connect('mongodb+srv://shindeabhijeet552:Abhijeet143d!@cluster0.pfzykwx.mongodb.net/joblisting-portal?retryWrites=true&w=majority&appName=Cluster0')
+connect('mongodb+srv://komalkhatik77:komal1998@cluster0.o0du7.mongodb.net/')
     .then(() => {
         console.log('Connected to MongoDB');
     })
