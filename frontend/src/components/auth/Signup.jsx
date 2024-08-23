@@ -15,7 +15,7 @@ const Signup = () => {
   const [input, setInput] = useState({
     fullName: '',
     email: '',
-    contact: '',
+    contact: '', // Ensure the key name matches the formData key
     password: '',
     role: '',
     file: '',
@@ -37,7 +37,7 @@ const Signup = () => {
     const formData = new FormData();
     formData.append('fullName', input.fullName);
     formData.append('email', input.email);
-    formData.append('contact', input.contact);
+    formData.append('contact', input.contact); // Corrected key name here
     formData.append('password', input.password);
     formData.append('role', input.role);
     if (input.file) {
@@ -51,12 +51,9 @@ const Signup = () => {
           withCredentials: true,
         },
       });
-      if (res.status===200) {
-        navigate('/login');
+      if (res.status === 200) {
         toast.success(res.data.message);
         navigate('/login'); // Moved after success toast
-      } else {
-        toast.error('Unexpected response from server');
       }
     } catch (error) {
       console.log(error);
@@ -73,80 +70,55 @@ const Signup = () => {
   }, [user]); // Added user as a dependency
 
   return (
-    <>
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form
-          onSubmit={submitHandler}
-          className="w-1/2 border border-[#8d8296] shadow-2xl shadow-[#986dc0] rounded-md p-4 my-10"
-        >
-          <h1 className="font-bold text-xl mb-5">Sign Up</h1>
-          <div className="my-2">
-            <Label>Full Name</Label>
-            <Input
-              type="text"
-              placeholder="Sam Jose"
-              value={input.fullName}
-              name="fullName"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="my-2">
-            <Label>Email</Label>
-            <Input
-              type="email"
-              placeholder="sam@gmail.com"
-              value={input.email}
-              name="email"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="my-2">
-            <Label>Phone Number</Label>
-            <Input
-              type="number"
-              placeholder="5674835680"
-              value={input.contact}
-              name="contact"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="my-2">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="*******"
-              value={input.password}
-              name="password"
-              onChange={changeEventHandler}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-4 my-5">
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={input.role === 'student'}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r1">Student</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="recruiter"
-                  checked={input.role === 'recruiter'}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r2">Recruiter</Label>
-              </div>
-            </RadioGroup>
-            <div className="flex items-center gap-2">
-              <Label>Profile</Label>
+    <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <form
+        onSubmit={submitHandler}
+        className="w-1/2 border border-[#8d8296] shadow-2xl shadow-[#986dc0] rounded-md p-4 my-10"
+      >
+        <h1 className="font-bold text-xl mb-5">Sign Up</h1>
+        <div className="my-2">
+          <Label>Full Name</Label>
+          <Input
+            type="text"
+            placeholder="Sam Jose"
+            value={input.fullName}
+            name="fullName"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="my-2">
+          <Label>Email</Label>
+          <Input
+            type="email"
+            placeholder="sam@gmail.com"
+            value={input.email}
+            name="email"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="my-2">
+          <Label>Phone Number</Label>
+          <Input
+            type="number"
+            placeholder="5674835680"
+            value={input.contact} // Corrected value binding
+            name="contact" // Corrected input name
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="my-2">
+          <Label>Password</Label>
+          <Input
+            type="password"
+            placeholder="*******"
+            value={input.password}
+            name="password"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <RadioGroup className="flex items-center gap-4 my-5">
+            <div className="flex items-center space-x-2">
               <Input
                 type="radio"
                 name="role"
@@ -168,6 +140,7 @@ const Signup = () => {
               />
               <Label htmlFor="r2">Recruiter</Label>
             </div>
+          </RadioGroup>
           <div className="flex items-center gap-2">
             <Label>Profile</Label>
             <Input
@@ -198,7 +171,6 @@ const Signup = () => {
         </span>
       </form>
     </div>
-    </>
   );
 };
 

@@ -31,15 +31,19 @@ export const registerUser = async (req, res) => {
 
     const { buffer, mimetype } = req.file;
     const documentBuffer = buffer;
-    const uploadUrl = await uploadToCloudinary(fullName, documentBuffer, 'Profile Avatar');
+    const uploadUrl = await uploadToCloudinary(
+      fullName,
+      documentBuffer,
+      'Profile Avatar'
+    );
 
     const user = new UserModel({
-      fullName : fullName,
+      fullName: fullName,
       email,
       password: hashedPassword,
-      contact , // updated here   
+      contact, // updated here
       role,
-      profilePicture : uploadUrl,
+      profilePicture: uploadUrl,
     });
 
     console.log('Updated User', user);
@@ -61,7 +65,7 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const isUser = await UserModel.findOne({ email });
-    const name = isUser.fullName;
+    // const name = isUser.fullName;
 
     if (!isUser) {
       res.status(404).json({
@@ -83,7 +87,7 @@ export const loginUser = async (req, res) => {
         res.status(200).json({
           message: 'Login successful',
           token,
-          user : isUser  // sending user
+          user: isUser, // sending user
         });
       } else {
         res.status(400).json({
@@ -177,10 +181,10 @@ export const updateUserProfile = async (req, res) => {
   try {
     const user = await UserModel.findById(req.body.userId);
     const { fullName, email, contact, skills } = req.body;
-    console.log("req body full Name", fullName);
-    console.log("req body user id", req.body.userId );
+    console.log('req body full Name', fullName);
+    console.log('req body user id', req.body.userId);
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({
         message: 'User not found - ID ERROR',
       });
@@ -195,26 +199,30 @@ export const updateUserProfile = async (req, res) => {
 
     const { buffer, mimetype } = req.file;
     const documentBuffer = buffer;
-    const uploadUrl = await uploadToCloudinary(fullName, documentBuffer, 'Resume');
+    const uploadUrl = await uploadToCloudinary(
+      fullName,
+      documentBuffer,
+      'Resume'
+    );
 
     user.fullName = fullName;
     user.email = email;
     user.contact = contact;
-    user.skills = Array.isArray(skills) ? skills : skills.split(',').map(skill => skill.trim());
+    user.skills = Array.isArray(skills)
+      ? skills
+      : skills.split(',').map((skill) => skill.trim());
     user.resume = uploadUrl;
 
     await user.save();
     res.status(200).json({
       message: 'Profile updated successfully',
-      user
+      user,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: 'Internal Server Error',
-      error
+      error,
     });
   }
 };
-
-

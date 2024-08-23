@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema({
   resume: {
     type: String,
     required: false,
-    default : "user did not upload resume"
+    default: 'user did not upload resume',
   },
   employmentStatus: {
     type: String,

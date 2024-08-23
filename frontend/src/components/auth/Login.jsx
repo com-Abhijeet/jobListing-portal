@@ -26,22 +26,34 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    // Basic client-side validation
+    if (!input.email || !input.password || !input.role) {
+      toast.error('Please fill all fields and select a role.');
+      return;
+    }
+
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`http://localhost:3000/api/v1/user/login`, input, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
+      console.log('Sending login request:', input); // Log the input data
+      const res = await axios.post(
+        `http://localhost:3000/api/v1/user/login`,
+        input,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
       if (res.status === 200) {
         dispatch(setUser(res.data.user));
         navigate('/');
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || 'Something went wrong!');
+      console.error('Login error:', error); // Log the full error
+      toast.error(error.response?.data?.message || 'Internal Server Error');
     } finally {
       dispatch(setLoading(false));
     }
@@ -51,7 +63,7 @@ const Login = () => {
     if (user) {
       navigate('/'); // Redirect to home if user is already logged in
     }
-  }, [user]); // Added `user` as a dependency to re-run this hook when user changes
+  }, [user, navigate]);
 
   return (
     <div className="flex items-center justify-center max-w-7xl mx-auto">

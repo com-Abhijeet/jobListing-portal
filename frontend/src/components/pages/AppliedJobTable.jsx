@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useSelector } from 'react-redux'; // Import useSelector to access Redux store state
 import {
   TableBody,
   TableCaption,
@@ -6,10 +7,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import { Badge } from "../ui/badge";
+} from '../ui/table';
+import { Badge } from '../ui/badge';
+import { setAllAppliedJobs } from '@/redux/jobSlice';
+import store from './../../redux/store';
 
 const AppliedJobTable = () => {
+  // Get applied jobs data from Redux store
+  // const { user } = useSelector((store) => store.auth);
+  const appliedJobs = useSelector((store) => store.appliedJobs); // Adjust according to your state structure
+
   return (
     <div>
       <table className="min-w-full bg-white border">
@@ -23,16 +30,24 @@ const AppliedJobTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3, 4].map((item, index) => (
-            <TableRow key={index}>
-              <TableCell>17-07-2024</TableCell>
-              <TableCell>Frontend Developer</TableCell>
-              <TableCell>Google</TableCell>
-              <TableCell className="text-right">
-                <Badge>Selected</Badge>
+          {setAllAppliedJobs.length > 0 ? (
+            appliedJobs.map((job, index) => (
+              <TableRow key={index}>
+                <TableCell>{job.date}</TableCell>
+                <TableCell>{job.role}</TableCell>
+                <TableCell>{job.company}</TableCell>
+                <TableCell className="text-right">
+                  <Badge>{job.status}</Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan="4" className="text-center">
+                No applied jobs found.
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </table>
     </div>
