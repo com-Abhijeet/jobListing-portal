@@ -31,13 +31,16 @@ const Job = ({ job }) => {
       <div className="flex items-center gap-2 my-2">
         <Button className="p-6" variant="outline" size="icon">
           <Avatar>
-            <AvatarImage src={job?.companyId?.logo} />
+            <AvatarImage
+              src={job?.companyId?.logo || '/default-logo.png'} // Fallback logo
+              alt={`${job?.companyId?.companyName} Logo`}
+              onError={(e) => (e.target.src = '/default-logo.png')} // Handle broken image
+            />
           </Avatar>
         </Button>
         <div>
           <h1 className="font-medium text-lg">{job?.companyId?.companyName}</h1>
-          <p className="text-sm text-gray-500">{job?.location}</p>{' '}
-          {/* Display City */}
+          <p className="text-sm text-gray-500">{job?.location}</p>
         </div>
       </div>
 

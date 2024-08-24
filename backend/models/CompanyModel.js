@@ -8,7 +8,10 @@ const CompanySchema = new mongoose.Schema({
     description : String,
     website : String,
     location : String,
-    logo : String,
+    logo :{
+        type: String,
+        required: true
+    },
     createdBy : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'

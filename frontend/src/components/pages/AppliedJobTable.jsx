@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector to access Redux store state
+import { useSelector } from 'react-redux';
 import {
   TableBody,
   TableCaption,
@@ -9,13 +9,10 @@ import {
   TableRow,
 } from '../ui/table';
 import { Badge } from '../ui/badge';
-import { setAllAppliedJobs } from '@/redux/jobSlice';
-import store from './../../redux/store';
 
 const AppliedJobTable = () => {
   // Get applied jobs data from Redux store
-  // const { user } = useSelector((store) => store.auth);
-  const appliedJobs = useSelector((store) => store.appliedJobs); // Adjust according to your state structure
+  const appliedJobs = useSelector((store) => store.job.appliedJobs);
 
   return (
     <div>
@@ -30,10 +27,10 @@ const AppliedJobTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {setAllAppliedJobs.length > 0 ? (
+          {appliedJobs && appliedJobs.length > 0 ? (
             appliedJobs.map((job, index) => (
               <TableRow key={index}>
-                <TableCell>{job.date}</TableCell>
+                <TableCell>{new Date(job.date).toLocaleDateString()}</TableCell>
                 <TableCell>{job.role}</TableCell>
                 <TableCell>{job.company}</TableCell>
                 <TableCell className="text-right">
