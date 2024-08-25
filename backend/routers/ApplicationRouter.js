@@ -7,6 +7,7 @@ const ApplicationRouter = Router()
 ApplicationRouter.post('/apply/:jobId', authenticateToken, applyJob)
 ApplicationRouter.get('/applicants/:id', authenticateToken, getApplicationsByJobId)
 ApplicationRouter.put('/status/update/:id', authenticateToken, updateApplicationStatus)
-ApplicationRouter.delete('/delete/:id', authenticateToken, deleteApplication)
+ApplicationRouter.delete('/delete/:id', authenticateToken, deleteApplication);
+ApplicationRouter.get('/user/get/:id', authenticateToken, getApplicationsByUserId)
 
 export default ApplicationRouter;

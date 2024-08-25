@@ -4,8 +4,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const useGetAppliedJobs = () => {
+  const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +20,7 @@ const useGetAppliedJobs = () => {
           return;
         }
 
-        const res = await axios.get(`${APPLICATION_API_END_POINT}/get`, {
+        const res = await axios.get(`${APPLICATION_API_END_POINT}/user/get/${user._id}`, {
           withCredentials: true,
           headers: {
             'Content-Type': 'application/json',
@@ -30,8 +32,9 @@ const useGetAppliedJobs = () => {
         console.log('Response Data:', res.data);
 
         if (res.status === 200) {
-          if (res.data && res.data.application) {
-            dispatch(setAllAppliedJobs(res.data.application));
+          if (res.data && res.data.applications) {
+            dispatch(setAllAppliedJobs(res.data.applications));
+            console.log("Applied jobs api", res.data.applications);
           } else {
             console.error('Unexpected response structure:', res.data);
           }

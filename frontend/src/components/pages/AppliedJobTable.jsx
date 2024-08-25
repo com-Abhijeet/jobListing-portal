@@ -15,7 +15,16 @@ import store from './../../redux/store';
 const AppliedJobTable = () => {
   // Get applied jobs data from Redux store
   // const { user } = useSelector((store) => store.auth);
-  const appliedJobs = useSelector((store) => store.appliedJobs); // Adjust according to your state structure
+  const appliedJobs = useSelector((store) => store.job.allAppliedJobs); // Adjust according to your state structure
+  console.log("appliedJobs", appliedJobs)
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   return (
     <div>
@@ -30,14 +39,14 @@ const AppliedJobTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {setAllAppliedJobs.length > 0 ? (
+          {appliedJobs.length > 0 ? (
             appliedJobs.map((job, index) => (
               <TableRow key={index}>
-                <TableCell>{job.date}</TableCell>
-                <TableCell>{job.role}</TableCell>
-                <TableCell>{job.company}</TableCell>
+                <TableCell>{formatDate(job.applicationDate)}</TableCell>
+                <TableCell>{job.job.jobTitle}</TableCell>
+                <TableCell>{job.company.companyName}</TableCell>
                 <TableCell className="text-right">
-                  <Badge>{job.status}</Badge>
+                  <Badge >{job.status}</Badge>
                 </TableCell>
               </TableRow>
             ))

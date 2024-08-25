@@ -13,16 +13,23 @@ import UpdateProfile from './UpdateProfile';
 const Profile = () => {
   useGetAppliedJobs();
   const { user } = useSelector((store) => store.auth);
-  const [profileData, setProfileData] = useState(user?.profile || {});
+  const [profileData, setProfileData] = useState(user || {});
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setProfileData(user?.profile || {});
+    setProfileData(user|| {});
   }, [user]);
 
   const handleProfileUpdate = (updatedProfile) => {
     setProfileData(updatedProfile);
   };
+
+  const extractFileName = (url) => {
+    const fullFileName = url.substring(url.lastIndexOf('/') + 1);
+    return decodeURIComponent(fullFileName.split('?')[0]);
+  };
+
+  // console.log(profileData);
 
   return (
     <div>
@@ -73,9 +80,9 @@ const Profile = () => {
             <Link
               to={profileData.resume}
               target="_blank"
-              className="text-blue-500 w-full hover:underline cursor-pointer"
+              className="text-blue-600 w-full hover:underline cursor-pointer"
             >
-              {profileData.resume}
+              {extractFileName(profileData.resume)}
             </Link>
           ) : (
             <span>NA</span>

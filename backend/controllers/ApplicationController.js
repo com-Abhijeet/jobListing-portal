@@ -68,10 +68,12 @@ export const getApplicationsByJobId = async(req , res) =>{
 
 export const getApplicationsByUserId = async(req , res) =>{
     try{
-        const { userId } = req.params;
+        const { id } = req.params;
+        console.log(id);
 
-        const applications = await ApplicationModel.find({ applicant: userId })
-            .populate('job', 'title description'); // Populate job with title and description
+        const applications = await ApplicationModel.find({ applicant: id })
+            .populate('job', 'jobTitle')
+            .populate('company', 'companyName'); // Populate job with title and description
 
         res.status(200).json({
             message: "Applications fetched successfully",
