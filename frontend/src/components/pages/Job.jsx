@@ -3,16 +3,30 @@ import { Button } from '../ui/button';
 import { Bookmark } from 'lucide-react';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveJobForLater } from '@/redux/jobSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Ensure savedJobs is always an array
+  const savedJobs = useSelector((store) => store.job.savedJobs) || [];
+
+  const isSaved = savedJobs.includes(job._id);
+
+  const handleSaveJob = () => {
+    console.log('Saving job with ID:', job._id); // Debug log
+    dispatch(saveJobForLater(job._id));
+    console.log('Saved jobs:', savedJobs); // Check if the job is added
+  };
 
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
     const currentTime = new Date();
     const timeDifference = currentTime - createdAt;
-    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
+    return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   };
 
   return (
@@ -23,8 +37,13 @@ const Job = ({ job }) => {
             ? 'Today'
             : `${daysAgoFunction(job?.createdAt)} days ago`}
         </p>
-        <Button variant="outline" className="rounded-full" size="icon">
-          <Bookmark />
+        <Button
+          variant="outline"
+          className="rounded-full"
+          size="icon"
+          onClick={handleSaveJob}
+        >
+          <Bookmark color={isSaved ? '#7209b7' : 'currentColor'} />
         </Button>
       </div>
 
@@ -32,9 +51,9 @@ const Job = ({ job }) => {
         <Button className="p-6" variant="outline" size="icon">
           <Avatar>
             <AvatarImage
-              src={job?.companyId?.logo || '/default-logo.png'} // Fallback logo
+              src={job?.companyId?.logo || '/default-logo.png'}
               alt={`${job?.companyId?.companyName} Logo`}
-              onError={(e) => (e.target.src = '/default-logo.png')} // Handle broken image
+              onError={(e) => (e.target.src = '/default-logo.png')}
             />
           </Avatar>
         </Button>
@@ -48,6 +67,7 @@ const Job = ({ job }) => {
         <h1 className="font-bold text-lg my-2">{job?.jobTitle}</h1>
         <p className="text-sm text-gray-600">{job?.description}</p>
       </div>
+
       <div className="flex items-center gap-2 mt-4">
         <Badge className="text-blue-700 font-bold" variant="ghost">
           {job?.vacancies} Positions
@@ -59,6 +79,7 @@ const Job = ({ job }) => {
           {job?.salary} LPA
         </Badge>
       </div>
+
       <div className="flex items-center gap-4 mt-4">
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
@@ -66,7 +87,13 @@ const Job = ({ job }) => {
         >
           Details
         </Button>
-        <Button className="bg-[#7209b7]">Save For Later</Button>
+        <Button
+          className={`bg-${isSaved ? 'gray-400' : '[#7209b7]'}`}
+          onClick={handleSaveJob}
+          disabled={isSaved}
+        >
+          {isSaved ? 'Saved' : 'Save For Later'}
+        </Button>
       </div>
     </div>
   );

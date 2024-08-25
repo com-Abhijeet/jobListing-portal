@@ -20,9 +20,19 @@ const jobSlice = createSlice({
     allAppliedJobs: [],
     searchedQuery: '',
     appliedJobs: [],
+    savedJobs: [],
   },
+  searchedQuery: {
+    Location: '',
+    Industry: '',
+    Salary: '',
+  },
+  savedJobs: [],
   reducers: {
     // actions
+    setJobs: (state, action) => {
+      state.allJobs = action.payload;
+    },
     setAllJobs: (state, action) => {
       state.allJobs = action.payload;
     },
@@ -46,14 +56,22 @@ const jobSlice = createSlice({
         state.appliedJobs = action.payload;
       });
     },
+    saveJobForLater: (state, action) => {
+      const jobId = action.payload;
+      if (!state.savedJobs.includes(jobId)) {
+        state.savedJobs.push(jobId); // Add the job ID to savedJobs
+      }
+    },
   },
 });
 export const {
+  setJobs,
   setAllJobs,
   setSingleJob,
   setAllAdminJobs,
   setSearchJobByText,
   setAllAppliedJobs,
   setSearchedQuery,
+  saveJobForLater,
 } = jobSlice.actions;
 export default jobSlice.reducer;
