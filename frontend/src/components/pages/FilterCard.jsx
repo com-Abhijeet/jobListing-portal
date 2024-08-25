@@ -7,21 +7,40 @@ import { setSearchedQuery } from '@/redux/jobSlice';
 const filterData = [
   {
     filterType: 'Location',
-    options: ['Delhi NCR', 'Banglore', 'Hyderabad', 'Pune', 'Mumbai'],
+    options: [
+      'Delhi NCR',
+      'Banglore',
+      'Hyderabad',
+      'Pune',
+      'Mumbai',
+      'Ahmedabad',
+    ],
   },
   {
     filterType: 'Industry',
-    options: ['Frontend Developer', 'Backend Developer', 'FullStack Developer'],
+    options: [
+      'Front End Developer',
+      'Backend Developer',
+      'FullStack Developer',
+      'Python Developer',
+      'UI/UX Developer',
+    ],
   },
   {
     filterType: 'Salary',
-    options: ['0-40k', '42-1lakh', '1lakh to 5lakh'],
+    options: [
+      '0-40k',
+      '42k-1lakh',
+      '1lakh-5lakh',
+      '6lakh-10lakh',
+      '11lakh-15lakh',
+    ],
   },
 ];
 
 const FilterCard = () => {
   const [selectedFilters, setSelectedFilters] = useState({
-    city: '',
+    Location: '',
     Industry: '',
     Salary: '',
   });
@@ -44,8 +63,8 @@ const FilterCard = () => {
       <h1 className="font-bold text-lg">Filter Jobs</h1>
       <hr className="mt-3" />
       {filterData.map((data, index) => (
-        <div key={index}>
-          <h1 className="font-bold text-lg">{data.filterType}</h1>
+        <div key={index} className="flex flex-col">
+          <h1 className="font-bold text-md mt-2 mb-2">{data.filterType}</h1>
           <RadioGroup
             value={selectedFilters[data.filterType]}
             onValueChange={(value) => changeHandler(data.filterType, value)}

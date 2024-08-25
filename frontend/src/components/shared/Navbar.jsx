@@ -85,10 +85,6 @@ const Navbar = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem>
-                          <Link to="/jobsearch">Job Search</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
                           <Link to="joblisting">Job Lisitng</Link>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -96,7 +92,7 @@ const Navbar = () => {
                   </div>
                 </div>
                 <div>
-                  <Link to="/browse">Browse</Link>
+                  <Link to="/jobsearch">Job Search</Link>
                 </div>
               </>
             )}

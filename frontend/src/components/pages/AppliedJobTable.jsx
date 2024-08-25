@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector to access Redux store state
+import { useSelector } from 'react-redux';
 import {
   TableBody,
   TableCaption,
@@ -9,8 +9,6 @@ import {
   TableRow,
 } from '../ui/table';
 import { Badge } from '../ui/badge';
-import { setAllAppliedJobs } from '@/redux/jobSlice';
-import store from './../../redux/store';
 
 const AppliedJobTable = () => {
   // Get applied jobs data from Redux store

@@ -32,12 +32,14 @@ const JobSearch = () => {
     const filteredJobs = allJobs.filter(
       (job) =>
         job.jobTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.companyId?.companyName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.companyId?.companyName
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
         job.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setJobs(filteredJobs);
   };
-  
+
   // Trigger search whenever searchTerm changes
   useEffect(() => {
     handleSearch();
@@ -91,11 +93,16 @@ const JobSearch = () => {
                 <div className="flex items-center gap-2 my-2">
                   <Button className="bg-transparent" variant="outline">
                     <Avatar>
-                      <AvatarImage src={job?.companyId?.logo} />
+                      <AvatarImage
+                        src={job?.companyId?.logo}
+                        alt={`${job?.companyId?.companyName} Logo`}
+                      />
                     </Avatar>
                   </Button>
                   <div>
-                    <h1 className="font-medium text-lg">{job?.companyId.companyName}</h1>
+                    <h1 className="font-medium text-lg">
+                      {job?.companyId.companyName}
+                    </h1>
                     <p className="text-sm text-gray-500">{job?.location}</p>
                   </div>
                 </div>
@@ -113,14 +120,14 @@ const JobSearch = () => {
                     {job?.experience}
                   </Badge>
                   <Badge className="text-[#7209b7] font-bold" variant="ghost">
-                    {job.salary}
+                    {job.salary} LPA
                   </Badge>
                 </div>
                 <div className="flex items-center gap-4 mt-4">
                   <Button
                     className="border-2 border-[#6300b3]"
                     variant="outline"
-                    onClick={()=> navigate(`/description/${job._id}`)}
+                    onClick={() => navigate(`/description/${job._id}`)}
                   >
                     Details
                   </Button>

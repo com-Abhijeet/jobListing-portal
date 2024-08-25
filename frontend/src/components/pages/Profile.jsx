@@ -5,16 +5,18 @@ import { Contact, Mail, Pen } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Label } from '../ui/label';
 import AppliedJobTable from './AppliedJobTable';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
 import { Link } from 'react-router-dom';
 import UpdateProfile from './UpdateProfile';
+import { fetchAppliedJobs } from '@/redux/jobSlice';
 
 const Profile = () => {
   useGetAppliedJobs();
   const { user } = useSelector((store) => store.auth);
   const [profileData, setProfileData] = useState(user || {});
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setProfileData(user|| {});
