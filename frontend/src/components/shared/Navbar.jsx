@@ -45,121 +45,128 @@ const Navbar = () => {
           </h1>
         </div>
         <div className="flex items-center gap-12">
-          <div className="flex font-medium items-center gap-5">
-            {user && user.role === 'recruiter' ? (
-              <>
-                <div>
-                  <Link to="/admin/companies">Companies</Link>
-                </div>
-                <div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex align-center gap-1">
-                      Job <TiArrowSortedDown />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>
-                        <Link to="/admin/jobs">Jobs</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>
-                        <Link to="/jobsearch">Job Search</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>
-                        <Link to="joblisting">Job Lisitng</Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <Link to="/">Home</Link>
-                </div>
-                <div>
-                  <div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="flex align-center gap-1">
-                        Job <TiArrowSortedDown className="mt-1" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>
-                          <Link to="joblisting">Job Lisitng</Link>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-                <div>
-                  <Link to="/jobsearch">Job Search</Link>
-                </div>
-              </>
-            )}
-          </div>
-
           {!isLoggedIn() ? (
-            // Show login and signup buttons if the user is not logged in
-            <div className="flex items-center gap-2">
-              <Link to="/login">
-                <Button variant="outline">Login</Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">
-                  Signup
-                </Button>
-              </Link>
+            // Show Home, Login, and Signup if not logged in
+            <div className="flex font-medium items-center gap-5">
+              <div>
+                <Link to="/">Home</Link>
+              </div>
+              <div>
+                <Link to="/login">
+                  <Button variant="outline">Login</Button>
+                </Link>
+              </div>
+              <div>
+                <Link to="/signup">
+                  <Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">
+                    Signup
+                  </Button>
+                </Link>
+              </div>
             </div>
           ) : (
-            // Show profile popover if the user is logged in
-            <Popover>
-              <PopoverTrigger asChild>
-                <Avatar className="cursor-pointer bg-slate-200">
-                  <AvatarImage
-                    src={user?.profilePicture}
-                    alt={user?.fullName || '@user'}
-                  />
-                </Avatar>
-              </PopoverTrigger>
-              <PopoverContent className="w-80">
-                <div>
-                  <div className="flex gap-2 space-y-2 text-gray-800 rounded-full">
-                    <Avatar className="cursor-pointer bg-slate-200">
-                      <AvatarImage
-                        src={user?.profilePicture}
-                        alt={user?.fullName || '@user'}
-                        className="text-gray-400 rounded-full "
-                      />
-                    </Avatar>
-                    <div className="text-gray-800">
-                      <h4 className="font-medium text-gray-400">
-                        {user?.fullName}
-                      </h4>
-                      <p className="text-sm text-gray-400">
-                        {user?.profile?.bio}
-                      </p>
+            // Show menu based on user role if logged in
+            <div className="flex items-center gap-12">
+              <div className="flex font-medium items-center gap-5">
+                {user && user.role === 'recruiter' ? (
+                  <>
+                    <div>
+                      <Link to="/admin/companies">Companies</Link>
                     </div>
-                  </div>
-                  <div className="flex flex-col my-2 text-gray-800">
-                    {!user?.role !== 'student' && (
+                    <div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="flex align-center gap-1">
+                          Job <TiArrowSortedDown />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem>
+                            <Link to="/admin/jobs">Jobs</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>
+                            <Link to="/jobsearch">Job Search</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>
+                            <Link to="joblisting">Job Listing</Link>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <Link to="/">Home</Link>
+                    </div>
+                    <div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="flex align-center gap-1">
+                          Job <TiArrowSortedDown className="mt-1" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem>
+                            <Link to="joblisting">Job Listing</Link>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    <div>
+                      <Link to="/jobsearch">Job Search</Link>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Avatar className="cursor-pointer bg-slate-200">
+                    <AvatarImage
+                      src={user?.profilePicture}
+                      alt={user?.fullName || '@user'}
+                    />
+                  </Avatar>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <div>
+                    <div className="flex gap-2 space-y-2 text-gray-800 rounded-full">
+                      <Avatar className="cursor-pointer bg-slate-200">
+                        <AvatarImage
+                          src={user?.profilePicture}
+                          alt={user?.fullName || '@user'}
+                          className="text-gray-400 rounded-full "
+                        />
+                      </Avatar>
+                      <div className="text-gray-800">
+                        <h4 className="font-medium text-gray-400">
+                          {user?.fullName}
+                        </h4>
+                        <p className="text-sm text-gray-400">
+                          {user?.profile?.bio}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col my-2 text-gray-800">
+                      {user?.role !== 'student' && (
+                        <div className="flex w-fit items-center gap-2 cursor-pointer">
+                          <User2 />
+                          <Button variant="link">
+                            <Link to="/profile">View Profile</Link>
+                          </Button>
+                        </div>
+                      )}
+
                       <div className="flex w-fit items-center gap-2 cursor-pointer">
-                        <User2 />
-                        <Button variant="link">
-                          <Link to="/profile">View Profile</Link>
+                        <LogOut />
+                        <Button onClick={logoutHandler} variant="link">
+                          Logout
                         </Button>
                       </div>
-                    )}
-
-                    <div className="flex w-fit items-center gap-2 cursor-pointer">
-                      <LogOut />
-                      <Button onClick={logoutHandler} variant="link">
-                        Logout
-                      </Button>
                     </div>
                   </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+                </PopoverContent>
+              </Popover>
+            </div>
           )}
         </div>
       </div>

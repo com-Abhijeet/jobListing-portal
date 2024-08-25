@@ -16,26 +16,6 @@ const filterData = [
       'Ahmedabad',
     ],
   },
-  {
-    filterType: 'Industry',
-    options: [
-      'Front End Developer',
-      'Backend Developer',
-      'FullStack Developer',
-      'Python Developer',
-      'UI/UX Developer',
-    ],
-  },
-  {
-    filterType: 'Salary',
-    options: [
-      '0-40k',
-      '42k-1lakh',
-      '1lakh-5lakh',
-      '6lakh-10lakh',
-      '11lakh-15lakh',
-    ],
-  },
 ];
 
 const FilterCard = () => {
