@@ -17,7 +17,7 @@ const Jobs = () => {
         ? job.industry.toLowerCase() === searchedQuery.Industry.toLowerCase()
         : true;
       const matchesSalary = searchedQuery.Salary
-        ? job.salary.toLowerCase() === searchedQuery.Salary.toLowerCase()
+        ? job.salary === searchedQuery.Salary.toLowerCase()
         : true;
 
       return matchesLocation && matchesIndustry && matchesSalary;
