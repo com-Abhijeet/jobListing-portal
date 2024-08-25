@@ -15,16 +15,16 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Button } from '../ui/button';
-import { APPLICATION_API_END_POINT } from '@/utils/constant'; // Ensure this path is correct
+import { APPLICATION_API_END_POINT } from '@/utils/constant';
 
 const shortlistingStatus = ['Accepted', 'Rejected'];
 
 const ApplicantsTable = () => {
   const { applicants } = useSelector((store) => store.application);
-  const [applicantsData, setApplicantsData] = useState(applicants); // Local state for applicants data
+  const [applicantsData, setApplicantsData] = useState(applicants);
 
   useEffect(() => {
-    setApplicantsData(applicants); // Update local state when the global state changes
+    setApplicantsData(applicants);
   }, [applicants]);
 
   const statusHandler = async (status, id) => {
@@ -41,7 +41,6 @@ const ApplicantsTable = () => {
       );
       if (res.status === 200) {
         toast.success(res.data.message);
-        // Update local state after status change
         setApplicantsData((prev) =>
           prev.map((applicant) =>
             applicant._id === id ? { ...applicant, status } : applicant
@@ -57,7 +56,7 @@ const ApplicantsTable = () => {
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.post(
-        `${APPLICATION_API_END_POINT}/offer/letter/${id}`,
+        `${APPLICATION_API_END_POINT}/send-offer-letter/${id}`,
         {},
         {
           headers: {
@@ -114,7 +113,16 @@ const ApplicantsTable = () => {
                   )}
                 </TableCell>
                 <TableCell>{item?.applicationDate.split('T')[0]}</TableCell>
-                <TableCell>{item?.status}</TableCell>
+                <TableCell
+                  style={{
+                    backgroundColor:
+                      item?.status === 'Accepted' ? 'green' : 'red',
+                    color: 'white',
+                    textAlign: 'center',
+                  }}
+                >
+                  {item?.status === 'Accepted' ? 'Accepted' : 'Rejected'}
+                </TableCell>
                 <TableCell className="float-right cursor-pointer">
                   <Popover>
                     <PopoverTrigger>

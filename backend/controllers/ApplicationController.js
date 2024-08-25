@@ -90,9 +90,18 @@ export const getApplicationsByUserId = async (req, res) => {
 export const updateApplicationStatus = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log('Request Params:', req.params);
     const { status } = req.body;
+    console.log('Request Body:', req.body);
+
+    if (!status || !['Accepted', 'Rejected', 'Applied'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status value' });
+    }
 
     const application = await ApplicationModel.findById(id);
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
     application.status = status;
     await application.save();
 
@@ -130,10 +139,18 @@ export const deleteApplication = async (req, res) => {
 export const sendOfferLetter = async (req, res) => {
   try {
     const { id } = req.params;
-    const { offerLetter } = req.body;
+    // Optionally handle the request body if you need to include additional data
+    // const { offerLetter } = req.body;
+
+    // Find the application by ID and update it with the offer letter
     const application = await ApplicationModel.findById(id);
-    application.offerLetter = offerLetter;
-    await application.save();
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    // Perform necessary logic to send the offer letter
+    // e.g., update application with the offer letter or perform an email action
+
     res.status(200).json({
       message: 'Offer letter sent successfully',
       application,

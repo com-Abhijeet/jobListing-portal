@@ -17,6 +17,11 @@ ApplicationRouter.get(
   authenticateToken,
   getApplicationsByJobId
 );
+ApplicationRouter.get(
+  '/applicants/:id',
+  authenticateToken,
+  getApplicationsByJobId
+);
 ApplicationRouter.put(
   '/status/update/:id',
   authenticateToken,
@@ -34,15 +39,5 @@ ApplicationRouter.post(
   authenticateToken,
   sendOfferLetter
 );
-// ApplicationRouter.post('/offer/letter/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     // Implement sending logic here
-//     res.status(200).json({ message: 'Offer letter sent successfully' });
-//   } catch (error) {
-//     console.error('Error sending offer letter:', error);
-//     res.status(500).json({ message: error.message });
-//   }
-// });
 
 export default ApplicationRouter;
