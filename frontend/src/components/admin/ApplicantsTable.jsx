@@ -116,12 +116,12 @@ const ApplicantsTable = () => {
                 <TableCell
                   style={{
                     backgroundColor:
-                      item?.status === 'Accepted' ? 'green' : 'red',
+                      item?.status === 'Accepted' ? 'red' : 'green',
                     color: 'white',
                     textAlign: 'center',
                   }}
                 >
-                  {item?.status === 'Accepted' ? 'Accepted' : 'Rejected'}
+                  {item?.status}
                 </TableCell>
                 <TableCell className="float-right cursor-pointer">
                   <Popover>
