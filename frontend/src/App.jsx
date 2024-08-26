@@ -23,6 +23,7 @@ import JobDescription from './components/pages/JobDescription';
 import AdminJobs from './components/admin/AdminJobs';
 import PostJob from './components/admin/PostJob';
 import Applicants from './components/admin/Applicants';
+import OfferLetter from './components/admin/OfferLetter';
 
 export const RecoveryContext = createContext();
 function App() {
@@ -70,6 +71,22 @@ function App() {
               <Route path="/admin/jobs" element={<AdminJobs/>} />
               <Route path="/admin/jobs/create" element={<PostJob/>} />
               <Route path="/admin/jobs/applicants/:id" element={<Applicants/>} />
+              <Route
+                path="/offerletter"
+                element={
+                  <OfferLetter
+                    candidateName="komal khatik"
+                    position="Software Engineer"
+                    startDate="September 1, 2024"
+                    salary="120,000"
+                    location="Mumbai"
+                    companyName="ABC Corp"
+                    offerDate="August 25, 2024"
+                    dueDate="August 30, 2024"
+                  />
+                }
+              />
+                
             </Routes>
             <Footer />
           </div>

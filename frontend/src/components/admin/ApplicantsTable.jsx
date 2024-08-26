@@ -16,6 +16,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Button } from '../ui/button';
 import { APPLICATION_API_END_POINT } from '@/utils/constant';
+import { useNavigate } from 'react-router-dom';
 
 const shortlistingStatus = ['Accepted', 'Rejected'];
 
@@ -23,9 +24,13 @@ const ApplicantsTable = () => {
   const { applicants } = useSelector((store) => store.application);
   const [applicantsData, setApplicantsData] = useState(applicants);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setApplicantsData(applicants);
   }, [applicants]);
+
+
 
   const statusHandler = async (status, id) => {
     try {
@@ -52,27 +57,27 @@ const ApplicantsTable = () => {
     }
   };
 
-  const sendOfferLetter = async (id) => {
-    try {
-      axios.defaults.withCredentials = true;
-      const res = await axios.post(
-        `${APPLICATION_API_END_POINT}/send-offer-letter/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
-        }
-      );
-      if (res.status === 200) {
-        toast.success(res.data.message);
-      }
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || 'Failed to send offer letter'
-      );
-    }
-  };
+  // const sendOfferLetter = async (id) => {
+  //   try {
+  //     axios.defaults.withCredentials = true;
+  //     const res = await axios.post(
+  //       `${APPLICATION_API_END_POINT}/send-offer-letter/${id}`,
+  //       {},
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${Cookies.get('token')}`,
+  //         },
+  //       }
+  //     );
+  //     if (res.status === 200) {
+  //       toast.success(res.data.message);
+  //     }
+  //   } catch (error) {
+  //     toast.error(
+  //       error.response?.data?.message || 'Failed to send offer letter'
+  //     );
+  //   }
+  // };
   const statusColors = {
     'Accepted': 'green',
     'Applied': 'yellow',
@@ -164,7 +169,7 @@ const ApplicantsTable = () => {
                   {item.status === 'Accepted' && (
                     <Button
                       className="bg-[#6A38C2]"
-                      onClick={() => sendOfferLetter(item._id)}
+                      onClick={() => navigate('/offerletter')}
                     >
                       Send Offer Letter
                     </Button>
