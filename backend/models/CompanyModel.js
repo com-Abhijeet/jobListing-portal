@@ -10,7 +10,7 @@ const CompanySchema = new mongoose.Schema({
     location : String,
     logo :{
         type: String,
-        required: true
+        required: false
     },
     createdBy : {
         type: mongoose.Schema.Types.ObjectId,
