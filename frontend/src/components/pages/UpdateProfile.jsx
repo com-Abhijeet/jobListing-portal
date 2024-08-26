@@ -27,8 +27,8 @@ const UpdateProfile = ({ open, setOpen, onProfileUpdate }) => {
     fullName: user?.fullName || '',
     email: user?.email || '',
     contact: user?.contact || '',
-    bio: user?.profile?.bio || '',
-    skills: user?.profile?.skills?.join(', ') || '',
+    bio: user?.bio || '', // Corrected the reference to bio
+    skills: user?.skills?.join(', ') || '', // Corrected the reference to skills
     file: null,
     profilePicture: null,
   });
@@ -70,6 +70,8 @@ const UpdateProfile = ({ open, setOpen, onProfileUpdate }) => {
       formData.append('profilePicture', input.profilePicture);
     }
 
+    console.log([...formData.entries()]); // Log form data to inspect it
+
     try {
       setLoading(true);
       const res = await axios.put(`${USER_API_END_POINT}/update`, formData, {
@@ -83,7 +85,7 @@ const UpdateProfile = ({ open, setOpen, onProfileUpdate }) => {
       if (res.status === 200) {
         dispatch(setUser(res.data.user));
         toast.success(res.data.message);
-        onProfileUpdate(res.data.user.profile);
+        onProfileUpdate(res.data.user);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
