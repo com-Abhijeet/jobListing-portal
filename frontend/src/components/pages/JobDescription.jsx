@@ -15,9 +15,6 @@ const JobDescription = () => {
     const isIntiallyApplied = singleJob?.applicants?.some(application => application.applicant === user?._id) || false;
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
-    console.log("singleJOB" , singleJob);
-    
-
     const params = useParams();
     const jobId = params.id;
     const dispatch = useDispatch();
@@ -26,6 +23,7 @@ const JobDescription = () => {
     useEffect(() => {
         if (singleJob?.applicants?.some(applicant => applicant === user?._id)) {
             setIsApplied(true);
+            console.log('single job company ' ,singleJob.companyId);
         }
     }, [singleJob, user]);
 
@@ -33,9 +31,9 @@ const JobDescription = () => {
         try {
             // console.log("company" , singleJob.company);
             const res = await axios.post(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
-                // company: singleJob.company,
+                company: singleJob.companyId,
                 user: user._id,
-                status: 'applied'
+                status: 'Applied'
             }, {
                 withCredentials: true,
                 headers: {

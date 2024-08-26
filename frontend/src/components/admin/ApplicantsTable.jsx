@@ -73,6 +73,12 @@ const ApplicantsTable = () => {
       );
     }
   };
+  const statusColors = {
+    'Accepted': 'green',
+    'Applied': 'yellow',
+    'Rejected': 'red',
+  };
+
 
   return (
     <div>
@@ -92,7 +98,15 @@ const ApplicantsTable = () => {
         </TableHeader>
         <TableBody>
           {applicantsData &&
-            applicantsData.map((item) => (
+            applicantsData.map((item) => {
+              const statusColors = {
+                'Accepted': 'green',
+                'Applied': '#F7C143',
+                'Rejected': 'red',
+              };
+
+              const color = statusColors[item?.status] || '#F7C143';
+              return(
               <TableRow key={item._id}>
                 <TableCell>{item?.applicant?.fullName}</TableCell>
                 <TableCell>{item?.applicant?.email}</TableCell>
@@ -113,15 +127,20 @@ const ApplicantsTable = () => {
                   )}
                 </TableCell>
                 <TableCell>{item?.applicationDate.split('T')[0]}</TableCell>
-                <TableCell
-                  style={{
-                    backgroundColor:
-                      item?.status === 'Accepted' ? 'red' : 'green',
-                    color: 'white',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item?.status}
+                <TableCell>
+                  <span
+                    style={{
+                      backgroundColor: color,
+                      color: 'white',
+                      textAlign: 'center',
+                      borderRadius: '5px',
+                      padding: '5px',
+                      display: 'inline-block',
+                      minWidth: '80px', // Adjust as needed
+                    }}
+                  >
+                    {item?.status}
+                  </span>
                 </TableCell>
                 <TableCell className="float-right cursor-pointer">
                   <Popover>
@@ -152,7 +171,8 @@ const ApplicantsTable = () => {
                   )}
                 </TableCell>
               </TableRow>
-            ))}
+            );
+          })}
         </TableBody>
       </Table>
     </div>

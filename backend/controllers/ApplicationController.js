@@ -5,13 +5,16 @@ import JobModel from '../models/JobModel.js';
 export const applyJob = async (req, res) => {
   try {
     const { jobId } = req.params;
-    const { user, status } = req.body;
+    const { user, status, company} = req.body;
+
+    console.log("Company id ", company)
 
     // Create a new application
     const newApplication = new ApplicationModel({
       job: jobId,
       applicant: user,
       status,
+      company: company,
     });
 
     const application = await newApplication.save();
