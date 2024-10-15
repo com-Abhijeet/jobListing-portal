@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoading, setUser } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -48,6 +49,7 @@ const Login = () => {
       );
       if (res.status === 200) {
         dispatch(setUser(res.data.user));
+        Cookies.set('token', res.data.token)
         navigate('/');
         toast.success(res.data.message);
       }
