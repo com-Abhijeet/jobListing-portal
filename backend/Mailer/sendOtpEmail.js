@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const sendOTPEmail = async({ recipient_email, OTP })=> {
+  console.log("sending OTP mail")
     return new Promise((resolve, reject) => {
       var transporter = nodemailer.createTransport({
         service: "gmail",

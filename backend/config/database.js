@@ -1,9 +1,10 @@
 import { connect } from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Database = () => {
-  connect(
-    'mongodb+srv://shindeabhijeet552:Abhijeet143d!@cluster0.pfzykwx.mongodb.net/MySchool?retryWrites=true&w=majority&appName=Cluster0'
-  )
+  connect(process.env.MONGO_URL)
     .then(() => {
       console.log('Connected to MongoDB');
     })
@@ -11,4 +12,5 @@ const Database = () => {
       console.error('Error connecting to MongoDB:', error);
     });
 };
+
 export default Database;
