@@ -5,7 +5,7 @@ import { JOB_API_END_POINT } from '@/utils/constant';
 export const fetchAppliedJobs = createAsyncThunk(
   'job/fetchAppliedJobs',
   async () => {
-    const response = await axios.get('JOB_API_END_POINT/apply/:jobId'); // Replace with your API endpoint
+    const response = await axios.get(`${JOB_API_END_POINT}/apply/:jobId`); // Replace with your API endpoint
     return response.data;
   }
 );

@@ -15,7 +15,7 @@ const PORT = 3000;
 Database();
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: true,
   credentials: true,
   optionSuccessStatus: 200,
 };
