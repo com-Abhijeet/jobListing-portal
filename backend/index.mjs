@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 
 import Database from './config/database.js';
+import dotenv from "dotenv"
 
 import UserRouter from './routers/UserRouter.js';
 import JobRouter from './routers/JobRouter.js';
@@ -9,8 +10,8 @@ import CompanyRouter from './routers/CopanyRouter.js';
 import ApplicationRouter from './routers/ApplicationRouter.js';
 
 const app = express();
+dotenv.config();
 
-const PORT = 3000;
 
 Database();
 
@@ -27,6 +28,6 @@ app.use('/api/v1/job', JobRouter);
 app.use('/api/v1/company', CompanyRouter);
 app.use('/api/v1/application', ApplicationRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });

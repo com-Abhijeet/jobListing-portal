@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
+import { USER_API_END_POINT } from '@/utils/constant';
 
 const ForgotPassword = () => {
   const [input, setInput] = useState({
@@ -27,7 +28,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/forgotpass`, input, {
+      const res = await axios.post(`${USER_API_END_POINT}/forgotPassword`, input, {
         headers: {
           'Content-Type': 'application/json',
         },
