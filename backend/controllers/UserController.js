@@ -82,7 +82,7 @@ export const loginUser = async (req, res) => {
           httpOnly: false,
           maxAge: 24 * 60 * 60 * 1000,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'Strict',
+          sameSite: 'None',
         });
         console.log('Token set in Cokkie');
         res.status(200).json({
